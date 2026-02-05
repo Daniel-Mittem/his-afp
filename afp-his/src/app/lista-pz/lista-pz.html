@@ -1,3 +1,5 @@
+<div
+  class="flex flex-wrap flex-row gap-4 padding-4">
 @for(pz of listaPz(); track pz.braccialetto){
     <his-card-pz 
       [paziente]="pz"
@@ -5,3 +7,4 @@
 }@empty {
     <h1>Nessun paziente in lista</h1>
 }
+<div>
