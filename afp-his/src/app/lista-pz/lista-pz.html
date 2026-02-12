@@ -1,10 +1,27 @@
+<input type="text" pInputText [(ngModel)]="nomePaziente" placeholder="Cerca paziente...">
+
+<p>Nome PZ: {{ nomePaziente() || 'none' }}</p>
+
+@let srv = healthStatus()?.service;
+@let database = healthStatus()?.database;
+@let uptime = healthStatus()?.uptime;
+
+<ul>
+  <li> Service: <p-tag [severity]="srv ? 'success' : 'danger'" [value]="srv ?? 'KO'" /> </li>
+  <li>Database: <p-tag [severity]="database ? 'success' : 'danger'" [value]="database ?? 'KO'" /></li>
+  <li>Uptime:<p-tag [severity]="uptime ? 'success' : 'danger'" [value]="uptime ? uptime.toString() : 'N/A'" /></li>
+</ul>
+
+<!-- 
+- quadra: serve per passare valori dal Padre al figlio
+- tonde: serve per passare valori dal figlio al padre
+-->
 <div
   class="flex flex-wrap flex-row gap-4 padding-4">
-@for(pz of listaPz(); track pz.braccialetto){
-    <his-card-pz 
-      [paziente]="pz"
-    />
-}@empty {
-    <h1>Nessun paziente in lista</h1>
+@for(pz of filteredList(); track pz.braccialetto){
+    <his-card-pz  [paziente]="pz"/>
+    <p-button (onClick)="editNomePaziente(pz.nome)" label="edit"></p-button>
+} @empty {
+    <h1>Nessun paziente in lista è gay</h1>
 }
 <div>
