@@ -2,15 +2,8 @@
 
 <p>Nome PZ: {{ nomePaziente() || 'none' }}</p>
 
-@let srv = healthStatus()?.service;
-@let database = healthStatus()?.database;
-@let uptime = healthStatus()?.uptime;
+<his-stato-api />
 
-<ul>
-  <li> Service: <p-tag [severity]="srv ? 'success' : 'danger'" [value]="srv ?? 'KO'" /> </li>
-  <li>Database: <p-tag [severity]="database ? 'success' : 'danger'" [value]="database ?? 'KO'" /></li>
-  <li>Uptime:<p-tag [severity]="uptime ? 'success' : 'danger'" [value]="uptime ? uptime.toString() : 'N/A'" /></li>
-</ul>
 
 <!-- 
 - quadra: serve per passare valori dal Padre al figlio

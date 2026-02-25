@@ -3,30 +3,25 @@ import { CardPZ, Paziente } from "../card-pz/card-pz";
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { Button } from "primeng/button";
-import { HttpClient } from '@angular/common/http';
 import { TagModule } from 'primeng/tag';
+import { HealthStatus } from '../core/SystemStatus/healthStatus.model';
+import { StatoAPI } from "../ui/statoAPI/statoAPI";
+import { SystemStatus } from '../core/SystemStatus/system-status';
+
 
 interface Response{
   status: string;
   data:HealthStatus;
 }
 
-interface HealthStatus {
-  service: string;
-  database: string;
-  uptime: number;
-}
-
 @Component({
   selector: 'his-lista-pz',
-  imports: [CardPZ, InputTextModule, FormsModule, Button, TagModule],
+  imports: [CardPZ, InputTextModule, FormsModule, Button, TagModule, StatoAPI],
   templateUrl: './lista-pz.html',
   styleUrl: './lista-pz.scss',
 })
 export class ListaPz {
   nomePaziente = model<string>('');
-  healthStatus = signal<HealthStatus | null>(null);
-  
 
 
   listaPz = signal<Paziente[]>([
@@ -79,19 +74,5 @@ export class ListaPz {
   
   editNomePaziente(nomePZ: string) {
     this.nomePaziente.set(nomePZ);
-  }
-
-  constructor() {
-    this.getHealthStatus();
-  }
-
-  readonly #http = inject(HttpClient);
-  getHealthStatus() {
-    this.#http.get<Response>('http://localhost:3000/health').subscribe((res) => {
-      console.table(res.data);
-      console.log('DB Status:', res.data.database);
-
-      this.healthStatus.set(res.data);
-    });
   }
 }
