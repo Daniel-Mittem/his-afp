@@ -1,9 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { ListaPz } from '../../lista-pz/lista-pz';
 import { Paziente, PazienteDTO } from './Pazienti.model';
 import { APIResponse } from '../../../../../his-afp/src/app/core/models/APIResponse.model';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,13 +10,14 @@ import { map } from 'rxjs';
 export class PazienteManager {
   #http = inject(HttpClient);
   #ListaPz = signal<Paziente[]>([]);
-  ListaPz = this.#ListaPz.asReadonly();
+  #listaPzFiltered = signal<Paziente[]>(this.#ListaPz());
+  ListaPz = this.#listaPzFiltered.asReadonly();
 
   constructor() {
-    this.featchPazienti()
+    this.fetchPazienti();
   }
 
-  public featchPazienti() {
+  public fetchPazienti() {
     this.#http.get<APIResponse<PazienteDTO[]>>('http://localhost:3000/admissions').subscribe({
       next: (res) => {
         const pz = res.data.map(p => this.mapPazienteDTOToPaziente(p));
@@ -53,4 +52,11 @@ export class PazienteManager {
     return eta;
   }
 
+  public filterByName(name: string) {
+    const filtered = this.#ListaPz().filter(p =>
+      p.nome.toLowerCase().includes(name.toLowerCase()) ||
+      p.cognome.toLowerCase().includes(name.toLowerCase())
+    );
+    this.#listaPzFiltered.set(filtered);
+  }
 }

@@ -1,6 +1,7 @@
-<input type="text" pInputText [(ngModel)]="nomePaziente" placeholder="Cerca paziente...">
+<input type="text" pInputText [(ngModel)]="nomePaziente" placeholder="Cerca paziente..." (change)="PazienteManager.filterByName(nomePaziente())">
 
 <p>Nome PZ: {{ nomePaziente() || 'none' }}</p>
+<p>Pazienti presenti in ps: {{ listaPz().length }}</p>
 
 <his-stato-api />
 
@@ -11,7 +12,7 @@
 -->
 <div
   class="flex flex-wrap flex-row gap-4 padding-4">
-@for(pz of filteredList(); track pz.braccialetto){
+@for(pz of listaPz(); track pz.braccialetto){
     <his-card-pz  [paziente]="pz"/>
     <p-button (onClick)="editNomePaziente(pz.nome)" label="edit"></p-button>
 } @empty {
