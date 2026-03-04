@@ -1,13 +1,13 @@
 import { Component, computed, effect, inject, model, signal } from '@angular/core';
-import { CardPZ } from "../card-pz/card-pz";
+import { CardPZ } from "../../ui/card-pz/card-pz";
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { Button } from "primeng/button";
 import { TagModule } from 'primeng/tag';
-import { HealthStatus } from '../core/SystemStatus/healthStatus.model';
-import { StatoAPI } from "../ui/statoAPI/statoAPI";
-import { Paziente } from '../core/Pazienti/Pazienti.model';
-import { PazienteManager } from '../core/Pazienti/patient-manager';
+import { HealthStatus } from '../../core/SystemStatus/healthStatus.model';
+import { StatoAPI } from "../../ui/statoAPI/statoAPI";
+import { Paziente } from '../../core/Pazienti/Pazienti.model';
+import { PazienteManager } from '../../core/Pazienti/patient-manager';
 
 
 interface Response{
