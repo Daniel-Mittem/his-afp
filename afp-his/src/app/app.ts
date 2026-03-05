@@ -1,11 +1,11 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterModule } from '@angular/router';
-import { DarkmodeSelector } from "./ui/darkmode-selector/darkmode-selector";
+import { RouterLink, RouterModule } from '@angular/router';
 import { Button } from "primeng/button";
+import { Header } from "./ui/header/header";
 
 @Component({
   selector: 'app-root',
-  imports: [DarkmodeSelector, Button, RouterLink, RouterModule],
+  imports: [Button, RouterLink, RouterModule, Header],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

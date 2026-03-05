@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'his-stato-pz',
+  selector: 'his-stato-servizi',
   imports: [],
-  templateUrl: './stato-pz.html',
-  styleUrl: './stato-pz.scss',
+  templateUrl: './stato-servizi.html',
+  styleUrl: './stato-servizi.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class StatoPz {
+export class StatoServizi {
 
 }

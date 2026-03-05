@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { ListaPz } from './features/lista-pz/lista-pz';
 import { ModificaPz } from './features/modifica-pz/modifica-pz';
 import { AccettazionePz } from './features/accettazione-pz/accettazione-pz';
-import { StatoPz } from './features/stato-servizi/stato-pz';
+import { StatoServizi } from './features/stato-servizi/stato-servizi';
 
 export const routes: Routes = [
     {
@@ -22,8 +22,8 @@ export const routes: Routes = [
         component: AccettazionePz
     },
     {
-        path: 'stato-pz',
-        component: StatoPz
+        path: 'stato-servizi',
+        component: StatoServizi
     },
     {
         path: '',
