@@ -1,9 +1,8 @@
 <p-button 
-(onClick)="toggleDarkMode()"
-[rounded]="true" 
-[outlined]="true" 
-[text]="true" 
-icon="pi pi-sun"
-severity="secondary">
+  (onClick)="toggleDarkMode()"
+  [rounded]="true" 
+  [outlined]="true" 
+  [text]="true" 
+  [icon]="isDark ? 'pi pi-moon' : 'pi pi-sun'"
+  severity="secondary">
 </p-button>
-
