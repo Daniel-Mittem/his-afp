@@ -7,23 +7,23 @@ import { StatoServizi } from './features/stato-servizi/stato-servizi';
 export const routes: Routes = [
     {
         path: 'lista-pz',
-        component: ListaPz,
+         loadComponent: () => import('./features/lista-pz/lista-pz').then((m) => m.ListaPz),
     },
       {
         path: 'modifica-pz',
-          component: ModificaPz,
+          loadComponent: () => import('./features/modifica-pz/modifica-pz').then((m) => m.ModificaPz),
     },
     {
         path: 'modifica-pz:patientID',
-        component: ModificaPz
+         loadComponent: () => import('./features/modifica-pz/modifica-pz').then((m) => m.ModificaPz),
     },
     {
         path: 'accettazione-pz',
-        component: AccettazionePz
+         loadComponent: () => import('./features/accettazione-pz/accettazione-pz').then((m) => m.AccettazionePz),
     },
     {
         path: 'stato-servizi',
-        component: StatoServizi
+         loadComponent: () => import('./features/stato-servizi/stato-servizi').then((m) => m.StatoServizi),
     },
     {
         path: '',
