@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Paziente, PazienteDTO } from './Pazienti.model';
-import { APIResponse } from '../../../../../his-afp/src/app/core/models/APIResponse.model';
+import { APIResponse } from '../models/APIResponse.model';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
