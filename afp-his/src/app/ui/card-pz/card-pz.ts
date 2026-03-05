@@ -1,7 +1,8 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { Button } from "primeng/button";
 import { Paziente } from '../../core/Pazienti/Pazienti.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'his-card-pz',
@@ -11,6 +12,15 @@ import { Paziente } from '../../core/Pazienti/Pazienti.model';
 })
 export class CardPZ {
   paziente = input.required<Paziente>();
+  readonly #router = inject(Router);
+
+  public navigateToSchedaPaziente() {
+    this.#router.navigate(['/modifica-pz'], {
+      queryParams: {
+       patientID: this.paziente().id
+      },
+    });
+  }
   
   setColoreDiStato() {
     switch (this.paziente().codiceColore) {

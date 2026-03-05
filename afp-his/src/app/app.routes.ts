@@ -9,12 +9,12 @@ export const routes: Routes = [
         path: 'lista-pz',
         component: ListaPz,
     },
-    {
-        path: 'modifica-pz:id',
-        component: ModificaPz
+      {
+        path: 'modifica-pz',
+          component: ModificaPz,
     },
     {
-        path: 'modifica-pz',
+        path: 'modifica-pz:patientID',
         component: ModificaPz
     },
     {
