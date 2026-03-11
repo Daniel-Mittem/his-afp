@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, effect, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
@@ -8,20 +8,23 @@ import { ButtonModule } from 'primeng/button';
   templateUrl: './darkmode-selector.html',
   styleUrl: './darkmode-selector.scss',
 })
-export class DarkmodeSelector implements OnInit {
-  isDark: boolean = false;
+export class DarkmodeSelector {
+  isDark = signal(window.matchMedia('(prefers-color-scheme: dark)').matches);
 
-  ngOnInit() {
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    this.isDark = prefersDark;
-    
-    if (this.isDark) {
-      document.querySelector('html')?.classList.add('my-app-dark');
-    }
+  constructor() {
+    effect(() => {
+      const darkModeActive = this.isDark();
+      const htmlElement = document.documentElement;
+
+      if (darkModeActive) {
+        htmlElement.classList.add('my-app-dark');
+      } else {
+        htmlElement.classList.remove('my-app-dark');
+      }
+    });
   }
-
+  
   toggleDarkMode() {
-    const element = document.querySelector('html');
-    this.isDark = element?.classList.toggle('my-app-dark') ?? false;
+    this.isDark.update((current) => !current);
   }
 }
