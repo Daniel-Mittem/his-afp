@@ -12,8 +12,12 @@
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss",
+<<<<<<< HEAD:afp-his/angular.json
           "changeDetection": "OnPush",
           "skipTests": true
+=======
+          "changeDetection": "OnPush"
+>>>>>>> daeccf288573f74208b81540be4c2decf7b094f4:his-afp/angular.json
         }
       },
       "root": "",
@@ -32,10 +36,14 @@
                 "input": "public"
               }
             ],
+<<<<<<< HEAD:afp-his/angular.json
             "styles": [
               "src/styles.scss", 
               "src/tailwind.config.css"
             ]
+=======
+            "styles": ["src/styles.scss", "src/tailwind.config.css"]
+>>>>>>> daeccf288573f74208b81540be4c2decf7b094f4:his-afp/angular.json
           },
           "configurations": {
             "production": {
