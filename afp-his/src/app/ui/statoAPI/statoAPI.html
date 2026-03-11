@@ -2,9 +2,12 @@
 @let database = SystemStatus.statoAPI().database;
 @let uptime = SystemStatus.statoAPI().uptime;
 
-<ul>
-    <li>Service: <p-tag [severity]="srv === 'UP' ? 'success' : 'danger'" value = "{{srv}}"/> </li>
-    <li>Database: <p-tag [severity]="database === 'CONNECTED'? 'success' : 'danger'" value= "{{ database }}" /></li>
-    <li>Uptime:<p-tag [severity]="uptime > 0 ? 'success' : 'danger'" value= "{{uptime}}" /></li>
-    <li><p-button label="Refresh" (onClick) = "SystemStatus.fetchStatoApi()"></p-button></li>
-</ul>
+
+<p-card>
+    <ul>
+        <li>Service: <p-tag [severity]="srv === 'UP' ? 'success' : 'danger'" value = "{{srv}}"/> </li>
+        <li>Database: <p-tag [severity]="database === 'CONNECTED'? 'success' : 'danger'" value= "{{ database }}" /></li>
+        <li>Uptime:<p-tag [severity]="uptime > 0 ? 'success' : 'danger'" value= "{{uptime}}" /></li>
+        <li><p-button label="Refresh" (onClick) = "SystemStatus.fetchStatoApi()"></p-button></li>
+    </ul>
+</p-card>
