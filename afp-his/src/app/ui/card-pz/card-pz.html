@@ -1,19 +1,27 @@
 <div class="mb-4 p-4">
     <p-card 
         class="w-2xs border-l-8 {{ setColoreDiStato() }}"
-        header="{{ paziente().cognome }} {{ paziente().nome }}"
         subheader="{{ paziente().braccialetto }} - {{ paziente().codiceColore }}" >
-        <p>{{ paziente().sex }}</p>
+
+        <ng-template #title>
+            <div class="flex justify-between items-center">
+                <span>{{ paziente().cognome }} {{ paziente().nome }}</span>
+                <i [class]="paziente().sex === 'M' ? 'pi pi-mars' : 'pi pi-key'"></i>
+            </div>
+        </ng-template>
+
         <p>
             <b>{{ paziente().patologia }}</b>
             <br />
             Note Triage: {{ paziente().note }}
         </p>
 
-            <ng-template #footer>
+        <ng-template #footer>
+            <div class="flex justify-end"> 
                 <p-button label="Modifica"
                 (onClick)="navigateToSchedaPaziente()" />
-            </ng-template>
+            </div>
+        </ng-template>
     
     </p-card>
 </div>
