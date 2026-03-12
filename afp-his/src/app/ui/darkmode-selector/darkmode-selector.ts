@@ -9,7 +9,9 @@ import { ButtonModule } from 'primeng/button';
   styleUrl: './darkmode-selector.scss',
 })
 export class DarkmodeSelector {
-  isDark = signal(window.matchMedia('(prefers-color-scheme: dark)').matches);
+  private readonly THEME_KEY = 'user-theme-preference'
+  
+  isDark = signal<boolean>(this.loadInitialTheme());
 
   constructor() {
     effect(() => {
@@ -21,9 +23,20 @@ export class DarkmodeSelector {
       } else {
         htmlElement.classList.remove('my-app-dark');
       }
+
+      localStorage.setItem(this.THEME_KEY, JSON.stringify(darkModeActive));
     });
   }
-  
+
+  private loadInitialTheme(): boolean {
+    const savedTheme = localStorage.getItem(this.THEME_KEY);
+
+    if (savedTheme !== null) {
+      return JSON.parse(savedTheme);
+    }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+
   toggleDarkMode() {
     this.isDark.update((current) => !current);
   }
