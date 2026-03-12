@@ -7,6 +7,7 @@ export interface Paziente {
     codiceColore: string;
     note: string;
     patologia: string;
+    sex: string;
 }
 
 
@@ -27,4 +28,5 @@ export interface PazienteDTO {
     coloreNome: string;
     modalitaArrivoCode: string;
     modalitaArrivoDescrizione: string;
+    sex: string;
 }

@@ -38,6 +38,7 @@ export class PazienteManager {
       note: pz.noteTriage,
       patologia: pz.patologiaCode,
       eta: this.calcolaEta(pz.dataNascita),
+      sex: pz.sex
     };
   }
 

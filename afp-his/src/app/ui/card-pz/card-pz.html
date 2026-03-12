@@ -3,6 +3,7 @@
         class="w-2xs border-l-8 {{ setColoreDiStato() }}"
         header="{{ paziente().cognome }} {{ paziente().nome }}"
         subheader="{{ paziente().braccialetto }} - {{ paziente().codiceColore }}" >
+        <p>{{ paziente().sex }}</p>
         <p>
             <b>{{ paziente().patologia }}</b>
             <br />
