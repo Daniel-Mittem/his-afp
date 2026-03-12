@@ -1,5 +1,12 @@
-<input type="text" pInputText [(ngModel)]="nomePaziente">
+<div class="flex flex-column align-items-center">
+<p-button (onClick)="PazienteManager.fetchPazienti()" [rounded]="true" [outlined]="true" [text]="true"
+    icon="pi pi-refresh" severity="secondary" />
 
+<p-toggle-switch [(ngModel)]="enableReFresh"/>
+</div>
+
+<p>Abilita refresh automatico: {{ enableReFresh() }}</p>
+<input type="text" pInputText [(ngModel)]="nomePaziente">
 
 <p>Pazienti presenti in ps: {{ PazienteManager.ListaPz().length }}</p>
 
@@ -10,4 +17,3 @@
         <h1>Nessun paziente trovato</h1>
     }
 <div>
-
