@@ -3,6 +3,8 @@
         class="w-2xs border-l-8 {{ setColoreDiStato() }}"
         subheader="{{ paziente().braccialetto }} - {{ paziente().codiceColore }}" >
 
+        <div class="w-8 h-8 border-16 {{ setColoreDiStato() }} {{ paziente().codiceColore }}"> </div>
+
         <ng-template #title>
             <div class="flex justify-between items-center">
                 <span>{{ paziente().cognome }} {{ paziente().nome }}</span>
