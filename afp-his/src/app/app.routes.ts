@@ -9,14 +9,14 @@ export const routes: Routes = [
         path: 'lista-pz',
          loadComponent: () => import('./features/lista-pz/lista-pz').then((m) => m.ListaPz),
     },
-      {
+    {
         path: 'modifica-pz',
           loadComponent: () => import('./features/modifica-pz/modifica-pz').then((m) => m.ModificaPz),
     },
     {
-        path: 'modifica-pz:patientID',
+        path: 'modifica-pz/:patientID',
          loadComponent: () => import('./features/modifica-pz/modifica-pz').then((m) => m.ModificaPz),
-    },
+    }, 
     {
         path: 'accettazione-pz',
          loadComponent: () => import('./features/accettazione-pz/accettazione-pz').then((m) => m.AccettazionePz),

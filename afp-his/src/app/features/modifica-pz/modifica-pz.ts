@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, input } from '@angular/core';
 
 @Component({
   selector: 'his-modifica-pz',
@@ -9,4 +9,12 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 })
 export class ModificaPz {
   patientID = input<string>();
+
+  constructor() {
+    effect(() => {
+      if (this.patientID() === undefined) {
+        console.log('No patient ID provided');
+      }
+    });
+  }
 }
