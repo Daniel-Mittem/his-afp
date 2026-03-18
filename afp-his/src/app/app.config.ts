@@ -5,6 +5,7 @@ import { providePrimeNG } from 'primeng/config';
 import { PazienteManager } from './core/Pazienti/patient-manager';
 
 import { routes } from './app.routes';
+import { GestioneRisorse } from './core/Risorse/gestione-risorse';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,6 +21,6 @@ export const appConfig: ApplicationConfig = {
       },
     }),
     provideAppInitializer(() => inject(PazienteManager).fetchPazienti()), 
-    provideAppInitializer(() => inject(PazienteManager).refreshPazienti()), 
+    provideAppInitializer(() => inject(GestioneRisorse).fetchRisorse()),
   ]
 };
