@@ -2,6 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Paziente, PazienteDTO } from './Pazienti.model';
 import { APIResponse } from '../models/APIResponse.model';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +30,7 @@ export class PazienteManager {
   }
 
   public fetchPazienti() {
-    this.#http.get<APIResponse<PazienteDTO[]>>('http://localhost:3000/admissions').subscribe({
+    this.#http.get<APIResponse<PazienteDTO[]>>(`${environment.apiUrl}/admissions`).subscribe({
       next: (res) => {
         const pz = res.data.map(p => this.mapPazienteDTOToPaziente(p));
         this.#ListaPz.set(pz);
