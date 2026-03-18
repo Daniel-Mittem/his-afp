@@ -15,9 +15,15 @@ export class CardPZ {
   readonly #router = inject(Router);
 
   public navigateToSchedaPaziente() {
-    this.#router.navigate([`/modifica-pz/${this.paziente().id}`],);
-}
-  
+    this.#router.navigate(['/modifica-pz'], {
+      queryParams: { patientId: this.paziente().id },
+    });
+  }
+
+  setBorder() {
+    return this.borderTop() ? 'border-t-8' : 'border-b-8';
+  }
+
   setColoreDiStato() {
     switch (this.paziente().codiceColore) {
       case 'NERO':
