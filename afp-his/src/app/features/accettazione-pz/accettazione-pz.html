@@ -1,5 +1,62 @@
-<p>{{GestioneRisorse.TriageColor() | json}}</p>
-<br>
-<p>{{GestioneRisorse.Pathology() | json}}</p>
-<br>
-<p>{{GestioneRisorse.ArrivalModes() | json}}</p>
+<div class="flex flex-col p-4">
+    <label for="nome">Nome:</label>
+    <input 
+        [formControl]="nome" 
+        [invalid]="nome.invalid && (nome.touched || nome.dirty)"
+        id="nome" 
+        pInputText 
+        type="text" 
+        class="w-2xs"
+    >
+    @if(nome.invalid && (nome.touched || nome.dirty)){
+        @if(nome.getError('required')){
+            <p class="text-red-600">Il campo 'nome' è obbligatorio </p>
+        }
+        @if(nome.getError('minlength')){
+        <p class="text-red-800">Il campo 'nome' deve contenere almeno {{ nome.errors?.['minlength'].requiredLength}} caratteri</p>
+        }
+        @if(nome.getError('maxlength')){
+            <p class="text-red-800">Il campo 'nome' non può superare i {{ nome.errors?.['maxlength'].requiredLength}} caratteri</p>
+        }
+    }
+</div>
+
+<p>Error: {{ nome.errors | json }}</p>
+
+<p>Valore nome: {{nome.value}}</p>
+<p>Modifica:
+    @if(nome.dirty){
+        <span class="text-green-500">Modificato</span>
+    }@else {
+        <span class="text-red-500">Non Modificato</span>
+    }
+</p>
+<p>Toccata:
+    @if(nome.touched){
+    <span class="text-green-500">Toccato</span>
+    }@else {
+    <span class="text-red-500">Non Toccato</span>
+    }
+</p>
+<p>Valida:
+    @if(nome.valid){
+    <span class="text-green-500">Valida</span>
+    }@else {
+    <span class="text-red-500">Non Valida</span>
+    }
+</p>
+<p>Pending:
+    @if(nome.pending){
+    <span class="text-green-500">Attesa</span>
+    }@else {
+    <span class="text-red-500">Non Attesa</span>
+    }
+</p>
+
+<p>Form valida: 
+    @if(nome.invalid && (nome.touched || nome.dirty)){
+    <span class="text-green-500">Non Valida</span>
+    }@else {
+    <span class="text-red-500">Valida</span>
+    }
+</p>
