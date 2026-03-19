@@ -1,5 +1,40 @@
-<p>triageColors: {{ gestioneRisorse.triageColors() | json }}</p>
-<hr>
-<p>pathologies: {{ gestioneRisorse.pathologies() | json }}</p>
-<hr>
-<p>arrivalModes: {{ gestioneRisorse.arrivalModes() | json }}</p>
+<div class="flex flex-col p-4">
+  <label for="nome">Nome:</label>
+  <input
+    [formControl]="nome"
+    class="w-2xs"
+    id="nome"
+    pInputText
+    type="text"
+  >
+</div>
+<p>Modifica:
+  @if (nome.dirty) {
+    <span class="text-green-500">Modificato</span>
+  } @else {
+    <span class="text-red-500">Non modificato</span>
+  }
+</p>
+<p>Toccata:
+  @if (nome.touched) {
+    <span class="text-green-500">Toccato</span>
+  } @else {
+    <span class="text-red-500">Non toccato</span>
+  }
+</p>
+<p>Valida:
+  @if (nome.valid) {
+    <span class="text-green-500">Valida</span>
+  } @else {
+    <span class="text-red-500">Non valida</span>
+  }
+</p>
+<p>Pending:
+  @if (nome.pending) {
+    <span class="text-green-500">Pending</span>
+  } @else {
+    <span class="text-red-500">Non pending</span>
+  }
+</p>
+
+<p>Valore nome: {{ nome.value }}</p>
