@@ -1,68 +1,115 @@
-<div class="flex flex-col p-4">
-  <label for="nome">Nome:</label>
-  <input
-    [formControl]="nome"
-    [invalid]="nome.invalid && (nome.touched || nome.dirty)"
-    class="w-2xs"
-    id="nome"
-    pInputText
-    type="text"
-  >
-  @if (nome.invalid && (nome.touched || nome.dirty)) {
-    @if (nome.getError('required')) {
-      <p class="text-red-500">
-        Il campo 'nome' è obbligatorio.
-      </p>
+<form (submit)="onSubmit()" [formGroup]="paziente">
+  <div class="flex flex-col p-4">
+    <label for="nome">Nome:</label>
+    <input
+      [invalid]="checkFormControl('nome')"
+      class="w-2xs"
+      formControlName="nome"
+      id="nome"
+      pInputText
+      type="text"
+    />
+    @if (checkFormControl('nome')) {
+      @if (checkFormControlError('nome', 'required')) {
+        <p class="text-red-500">Il campo 'nome' è obbligatorio.</p>
+      }
+      @if (checkFormControlError('nome', 'minlength')) {
+        <p class="text-red-500">
+          Il campo 'nome' deve contenere almeno
+          {{ checkFormControlError('nome', 'minlength').requiredLength }} caratteri.
+        </p>
+      }
+      @if (checkFormControlError('nome', 'maxlength')) {
+        <p class="text-red-500">
+          Il campo 'nome' non può superare i
+          {{ checkFormControlError('nome', 'maxlength').requiredLength }} caratteri.
+        </p>
+      }
     }
-    @if (nome.getError('minlength')) {
-      <p class="text-red-500">
-        Il campo 'nome' deve contenere almeno {{ nome.getError('minlength').requiredLength }} caratteri.
-      </p>
+  </div>
+
+  <div class="flex flex-col p-4">
+    <label for="cognome">Cognome:</label>
+    <input
+      [invalid]="checkFormControl('cognome')"
+      class="w-2xs"
+      formControlName="cognome"
+      id="cognome"
+      pInputText
+      type="text"
+    />
+    @if (checkFormControl('cognome')) {
+      @if (checkFormControlError('cognome', 'required')) {
+        <p class="text-red-500">Il campo 'nome' è obbligatorio.</p>
+      }
+      @if (checkFormControlError('cognome', 'minlength')) {
+        <p class="text-red-500">
+          Il campo 'cognome' deve contenere almeno
+          {{ checkFormControlError('cognome', 'minlength').requiredLength }} caratteri.
+        </p>
+      }
+      @if (checkFormControlError('cognome', 'maxlength')) {
+        <p class="text-red-500">
+          Il campo 'cognome' non può superare i
+          {{ checkFormControlError('cognome', 'maxlength').requiredLength }} caratteri.
+        </p>
+      }
     }
-    @if (nome.getError('maxlength')) {
-      <p class="text-red-500">
-        Il campo 'nome' non può superare i {{ nome.getError('maxlength').requiredLength }} caratteri.
-      </p>
-    }
-  }
-</div>
-<p>Error: {{ nome.errors | json }}</p>
+  </div>
+  <p-button
+    label="Invia"
+    type="submit"
+  />
+  <p-button
+    (onClick)="paziente.reset({nome: '', cognome: ''})"
+    label="Reset"
+    severity="warn"
+    variant="outlined"
+  />
+</form>
 
 
-<p>Modifica:
-  @if (nome.dirty) {
+<p>Valore Form Paziente: {{ paziente.value | json }}</p>
+<p>Error: {{ paziente.errors | json }}</p>
+
+<p>
+  Modifica:
+  @if (paziente.dirty) {
     <span class="text-green-500">Modificato</span>
   } @else {
     <span class="text-red-500">Non modificato</span>
   }
 </p>
-<p>Toccata:
-  @if (nome.touched) {
+<p>
+  Toccata:
+  @if (paziente.touched) {
     <span class="text-green-500">Toccato</span>
   } @else {
     <span class="text-red-500">Non toccato</span>
   }
 </p>
-<p>Valida:
-  @if (nome.valid) {
+<p>
+  Valida:
+  @if (paziente.valid) {
     <span class="text-green-500">Valida</span>
   } @else {
     <span class="text-red-500">Non valida</span>
   }
 </p>
-<p>Form valida:
-  @if (nome.invalid && (nome.touched || nome.dirty)) {
+<p>
+  Form valida:
+  @if (paziente.invalid && (paziente.touched || paziente.dirty)) {
     <span class="text-green-500">Form non valida</span>
   } @else {
     <span class="text-red-500">Form valida</span>
   }
 </p>
-<p>Pending:
-  @if (nome.pending) {
+<p>
+  Pending:
+  @if (paziente.pending) {
     <span class="text-green-500">Pending</span>
   } @else {
     <span class="text-red-500">Non pending</span>
   }
 </p>
 
-<p>Valore nome: {{ nome.value }}</p>
