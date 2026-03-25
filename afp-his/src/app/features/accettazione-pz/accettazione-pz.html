@@ -1,5 +1,5 @@
 <form [formGroup]="paziente" (submit)="onSubmit()">
-    <fieldset formGroupName="anagrafica">
+    <p-fieldset formGroupName="anagrafica">
         <legend>Dati Anagrafici:</legend>
         <div class="flex flex-col p-4">
             <label for="nome">Nome:</label>
@@ -87,21 +87,79 @@
             @if(checkFormControlErrorl('anagrafica.sesso', 'required')){
             <p-message severity="error" variant="simple">Il campo 'sesso' è obbligatorio </p-message>
             }
-            @if(checkFormControlErrorl('anagrafica.sesso', 'minLength')){
-            <p-message severity="error" variant="simple">Il campo 'sesso' deve contenere almeno
-                {{checkFormControlErrorl('anagrafica.sesso',
-                'minLength').requiredLength}}
-                caratteri</p-message>
             }
-            @if(checkFormControlErrorl('anagrafica.sesso', 'maxLength')){
-            <p-message severity="error" variant="simple">Il campo 'sesso' non può superare i {{
-                checkFormControlErrorl('anagrafica.sesso',
-                'maxLength').requiredLength}} caratteri
-            </p-message>
+        </div>
+    </p-fieldset>
+    
+    <p-fieldset formGroupName="sanitaria">
+        <div class="flex flex-col p-4">
+            <label for="patologia">Patologia:</label>
+            <p-select id="patologia" [invalid]="checkFormControl('sanitaria.patologia')" formControlName="patologia" class="w-2xs"
+                [options]="gestioneRisorse.Pathology()" 
+                [filter]="true"
+                [filterFields]="['code', 'description']"
+                optionValue="code" >
+            <ng-template #item let-pathology>
+                {{ pathology.code }} -- {{ pathology.description }}
+            </ng-template>
+            <ng-template #selectedItem let-pathology>
+                {{ pathology.code }} -- {{ pathology.description }}
+            </ng-template>
+            </p-select>
+            @if(checkFormControl('sanitaria.patologia')){
+            @if(checkFormControlErrorl('sanitaria.patologia', 'required')){
+            <p-message severity="error" variant="simple">Il campo 'Patologia' è obbligatorio </p-message>
             }
             }
         </div>
-    </fieldset>
+
+        <div class="flex flex-col p-4">
+            <label for="modArrivo">Modalita di arrivo:</label>
+            <p-select id="modArrivo" [invalid]="checkFormControl('sanitaria.modArrivo')" formControlName="modArrivo"
+                class="w-2xs" [options]="gestioneRisorse.ArrivalModes()" [filter]="true" [filterFields]="['code', 'description']"
+                optionValue="code">
+                <ng-template #item let-modArrivo>
+                    {{ modArrivo.code }} -- {{ modArrivo.description }}
+                </ng-template>
+                <ng-template #selectedItem let-modArrivo>
+                    {{ modArrivo.code }} -- {{ modArrivo.description }}
+                </ng-template>
+            </p-select>
+            @if(checkFormControl('sanitaria.modArrivo')){
+            @if(checkFormControlErrorl('sanitaria.modArrivo', 'required')){
+            <p-message severity="error" variant="simple">Il campo 'Modalita di arrivo' è obbligatorio </p-message>
+            }
+            }
+        </div>
+
+        <div class="flex flex-col p-4">
+            <label for="codiceColore">Codice colore</label>
+            <p-select id="codiceColore" [invalid]="checkFormControl('sanitaria.codiceColore')" formControlName="codiceColore"
+                class="w-2xs" [options]="gestioneRisorse.TriageColor()" optionValue="code">
+                <ng-template #item let-color>
+                    <div class="flex flex-row items-center gap-2">
+                        <span
+                        class="inline-block size-5 h-5 rounded" [style.background-color]="color.hexValue"></span>
+                        {{ color.displayName }}
+                    </div>
+                </ng-template>
+
+
+                <ng-template #selectedItem let-color>
+                    <div class="flex flex-row items-center gap-2">
+                        <span class="inline-block size-5 h-5 rounded" [style.background-color]="color.hexValue"></span>
+                        {{ color.displayName }}
+                    </div>
+                </ng-template>
+            </p-select>
+            @if(checkFormControl('sanitaria.codiceColore')){
+            @if(checkFormControlErrorl('sanitaria.codiceColore', 'required')){
+            <p-message severity="error" variant="simple">Il campo 'Modalita di arrivo' è obbligatorio </p-message>
+            }
+            }
+        </div>
+    
+    </p-fieldset>
 
     <p-button
     label="invia"

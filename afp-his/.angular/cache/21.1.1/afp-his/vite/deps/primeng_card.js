@@ -1,29 +1,29 @@
 import {
   BaseComponent,
   PARENT_INSTANCE
-} from "./chunk-2SB4LV4D.js";
+} from "./chunk-HBHJZAE7.js";
+import {
+  Bind,
+  BindModule
+} from "./chunk-BDHRLRUB.js";
 import {
   BaseStyle
-} from "./chunk-LAUFBOIT.js";
+} from "./chunk-3YFTSTTP.js";
 import {
   Footer,
   Header,
   PrimeTemplate,
   SharedModule
-} from "./chunk-PBVEJWHW.js";
+} from "./chunk-XY7I6Y6B.js";
+import {
+  k2 as k
+} from "./chunk-EHEDKODI.js";
 import {
   CommonModule,
   NgIf,
   NgTemplateOutlet
 } from "./chunk-BM2PGBV4.js";
 import "./chunk-YMWQB7FF.js";
-import {
-  Bind,
-  BindModule
-} from "./chunk-BDHRLRUB.js";
-import {
-  k2 as k
-} from "./chunk-EHEDKODI.js";
 import {
   ChangeDetectionStrategy,
   Component,

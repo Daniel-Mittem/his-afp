@@ -7,10 +7,11 @@ import { Button } from "primeng/button";
 import { MessageModule } from 'primeng/message';
 import { DatePickerModule } from 'primeng/datepicker';
 import { SelectModule } from 'primeng/select';
+import { FieldsetModule } from 'primeng/fieldset';
 
 @Component({
   selector: 'his-accettazione-pz',
-  imports: [InputTextModule, ReactiveFormsModule, JsonPipe, Button, MessageModule, DatePickerModule, SelectModule],
+  imports: [InputTextModule, ReactiveFormsModule, JsonPipe, Button, MessageModule, DatePickerModule, SelectModule, FieldsetModule],
   templateUrl: './accettazione-pz.html',
   styleUrl: './accettazione-pz.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
