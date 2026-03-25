@@ -7,35 +7,97 @@
                 type="text" class="w-2xs">
             @if(checkFormControl('anagrafica.nome')){
             @if(checkFormControlErrorl('anagrafica.nome', 'required')){
-            <p class="text-red-600">Il campo 'nome' è obbligatorio </p>
+            <p-message severity="error" variant="simple">Il campo 'nome' è obbligatorio </p-message>
             }
-            @if(checkFormControlErrorl('anagrafica.nome', 'minlength')){
-            <p class="text-red-800">Il campo 'nome' deve contenere almeno {{checkFormControlErrorl('anagrafica.nome', 'minlength').requiredLength}}
-                caratteri</p>
+            @if(checkFormControlErrorl('anagrafica.nome', 'minLength')){
+            <p-message severity="error" variant="simple">Il campo 'nome' deve contenere almeno {{checkFormControlErrorl('anagrafica.nome', 'minLength').requiredLength}}
+                caratteri</p-message>
             }
-            @if(checkFormControlErrorl('anagrafica.nome', 'maxlength')){
-            <p class="text-red-800">Il campo 'nome' non può superare i {{ checkFormControlErrorl('anagrafica.nome', 'maxlength').requiredLength}} caratteri
-            </p>
+            @if(checkFormControlErrorl('anagrafica.nome', 'maxLength')){
+            <p-message severity="error" variant="simple"> Il campo 'nome' non può superare i {{ checkFormControlErrorl('anagrafica.nome', 'maxLength').requiredLength}} caratteri
+            </p-message>
             }
             }
         </div>
 
         <div class="flex flex-col p-4">
             <label for="cognome">Cognome:</label>
-            <input formControlName="cognome" [invalid]="checkFormControl('cognome')" id="cognome" pInputText type="text" class="w-2xs">
-            @if(checkFormControl('cognome')){
-            @if(checkFormControlErrorl('cognome', 'required')){
-            <p class="text-red-600">Il campo 'cognome' è obbligatorio </p>
+            <input formControlName="cognome" [invalid]="checkFormControl('anagrafica.cognome')" id="cognome" pInputText type="text" class="w-2xs">
+            @if(checkFormControl('anagrafica.cognome')){
+            @if(checkFormControlErrorl('anagrafica.cognome', 'required')){
+            <p-message severity="error" variant="simple">Il campo 'cognome' è obbligatorio </p-message>
             }
-            @if(checkFormControlErrorl('cognome', 'minlength')){
-            <p class="text-red-800">Il campo 'cognome' deve contenere almeno {{checkFormControlErrorl('cognome',
+            @if(checkFormControlErrorl('anagrafica.cognome', 'minLength')){
+            <p-message severity="error" variant="simple">Il campo 'cognome' deve contenere almeno {{checkFormControlErrorl('anagrafica.cognome',
                 'minLength').requiredLength}}
-                caratteri</p>
+                caratteri</p-message>
             }
-            @if(checkFormControlErrorl('cognome', 'maxlength')){
-            <p class="text-red-800">Il campo 'cognome' non può superare i {{ checkFormControlErrorl('cognome',
+            @if(checkFormControlErrorl('anagrafica.cognome', 'maxLength')){
+            <p-message severity="error" variant="simple">Il campo 'cognome' non può superare i {{ checkFormControlErrorl('anagrafica.cognome',
                 'maxLength').requiredLength}} caratteri
-            </p>
+            </p-message>
+            }
+            }
+        </div>
+
+        <div class="flex flex-col p-4">
+            <label for="dataNascita">Data di nascita:</label>
+                <p-datepicker 
+                formControlName="dataNascita"
+                [invalid]="checkFormControl('anagrafica.dataNascita')"
+                class="w-2xs"
+                id="dataNascita"
+                dateFormat="dd/mm/yy" 
+                placeholder="dd/mm/yyyy"
+                [maxDate]="maxDate"
+                />
+            @if(checkFormControl('anagrafica.dataNascita')){
+            @if(checkFormControlErrorl('anagrafica.dataNascita', 'required')){
+            <p-message severity="error" variant="simple">Il 'Data di nascita' è obbligatorio </p-message>
+            }
+            }
+        </div>
+
+        <div class="flex flex-col p-4">
+            <label for="codiceFiscale">Codice Fiscale:</label>
+            <input formControlName="codiceFiscale" [invalid]="checkFormControl('anagrafica.codiceFiscale')" id="codiceFiscale" pInputText type="text"
+                class="w-2xs">
+            @if(checkFormControl('anagrafica.codiceFiscale')){
+            @if(checkFormControlErrorl('anagrafica.codiceFiscale', 'required')){
+            <p-message severity="error" variant="simple">Il 'Codice Fiscale:' è obbligatorio </p-message>
+            }
+            @if(checkFormControlErrorl('anagrafica.codiceFiscale', 'pattern')){
+            <p-message severity="error" variant="simple">Il 'Codice Fiscale:' non rispetta la struttura corretta <b>ABC ABC xxA Axxx K</b></p-message>
+            }
+            }
+        </div>
+
+        <div class="flex flex-col p-4">
+            <label for="sesso">Sesso:</label>
+            <p-select 
+            id="sesso"
+            [invalid]="checkFormControl('anagrafica.sesso')"
+            formControlName="sesso"
+            class="w-2xs"
+            [options]="sexOption"
+            optionLabel="desc"
+            optionValue="code"
+            />
+            @if(checkFormControl('anagrafica.sesso')){
+            @if(checkFormControlErrorl('anagrafica.sesso', 'required')){
+            <p-message severity="error" variant="simple">Il campo 'sesso' è obbligatorio </p-message>
+            }
+            @if(checkFormControlErrorl('anagrafica.sesso', 'minLength')){
+            <p-message severity="error" variant="simple">Il campo 'sesso' deve contenere almeno
+                {{checkFormControlErrorl('anagrafica.sesso',
+                'minLength').requiredLength}}
+                caratteri</p-message>
+            }
+            @if(checkFormControlErrorl('anagrafica.sesso', 'maxLength')){
+            <p-message severity="error" variant="simple">Il campo 'sesso' non può superare i {{
+                checkFormControlErrorl('anagrafica.sesso',
+                'maxLength').requiredLength}} caratteri
+            </p-message>
             }
             }
         </div>

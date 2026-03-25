@@ -4,15 +4,28 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 import { Button } from "primeng/button";
+import { MessageModule } from 'primeng/message';
+import { DatePickerModule } from 'primeng/datepicker';
+import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'his-accettazione-pz',
-  imports: [InputTextModule, ReactiveFormsModule, JsonPipe, Button],
+  imports: [InputTextModule, ReactiveFormsModule, JsonPipe, Button, MessageModule, DatePickerModule, SelectModule],
   templateUrl: './accettazione-pz.html',
   styleUrl: './accettazione-pz.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccettazionePz {
+  readonly maxDate = new Date();
+  readonly sexOption = [{
+    code: 'M',
+    desc: 'Maschio'
+  },
+  {
+    code: 'F',
+    desc: 'Femmina',
+  }]
+
   gestioneRisorse = inject(GestioneRisorse);
 
   // paziente = new FormGroup({
@@ -24,17 +37,17 @@ export class AccettazionePz {
 
   paziente = this.#fb.group({
     anagrafica: this.#fb.group({
-      nome: ['', Validators.required],
-      cognome: ['', Validators.required],
-      dataNascita: ['', Validators.required],
-      codiceFiscale: ['', Validators.required],
+      nome: ['', [Validators.required]],
+      cognome: ['', [Validators.required]],
+      dataNascita: ['', [Validators.required]],
+      codiceFiscale: ['', [Validators.required, Validators.pattern("[A-Z]{6}\\d{2}[A-Z]\\d{2}[A-Z]\\d{3}[A-Z]")]],
       sesso: ['', Validators.required],
     }),
     sanitaria: this.#fb.group({
-      patologia: ['', Validators.required],
-      codiceColore: ['', Validators.required],
-      modArrivo: ['', Validators.required],
-      noteTriage: ['', Validators.required],
+      patologia: ['', [Validators.required]],
+      codiceColore: ['', [Validators.required]],
+      modArrivo: ['', [Validators.required]],
+      noteTriage: ['', [Validators.required]],
     })
   })
 
