@@ -8,10 +8,11 @@ import { MessageModule } from 'primeng/message';
 import { DatePickerModule } from 'primeng/datepicker';
 import { SelectModule } from 'primeng/select';
 import { FieldsetModule } from 'primeng/fieldset';
+import { TextareaModule } from 'primeng/textarea';
 
 @Component({
   selector: 'his-accettazione-pz',
-  imports: [InputTextModule, ReactiveFormsModule, JsonPipe, Button, MessageModule, DatePickerModule, SelectModule, FieldsetModule],
+  imports: [InputTextModule, ReactiveFormsModule, JsonPipe, Button, MessageModule, DatePickerModule, SelectModule, FieldsetModule, TextareaModule],
   templateUrl: './accettazione-pz.html',
   styleUrl: './accettazione-pz.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -48,7 +49,7 @@ export class AccettazionePz {
       patologia: ['', [Validators.required]],
       codiceColore: ['', [Validators.required]],
       modArrivo: ['', [Validators.required]],
-      noteTriage: ['', [Validators.required]],
+      noteTriage: ['', [Validators.required, Validators.maxLength(500)]],
     })
   })
 
@@ -57,7 +58,7 @@ export class AccettazionePz {
     return fc?.invalid && (fc.touched || fc.dirty);
   }
 
-  checkFormControlErrorl(control: string, err: string) {
+  checkFormControlError(control: string, err: string) {
     const fc = this.paziente.get(control);
 
     if (fc && fc.hasError(err)) {
