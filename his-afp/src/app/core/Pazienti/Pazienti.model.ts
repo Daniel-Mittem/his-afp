@@ -19,6 +19,7 @@ export interface PazienteDTO {
   nome: string;
   cognome: string;
   dataNascita: string;
+  sex: string;
   codiceFiscale: string;
   patologiaDescrizione: string;
   coloreCode: string;
@@ -26,4 +27,25 @@ export interface PazienteDTO {
   coloreNome: string;
   modalitaArrivoCode: string;
   modalitaArrivoDescrizione: string;
+}
+
+export interface PatientAdmission {
+  anagrafica: {
+    nome: string;
+    cognome: string;
+    dataNascita: string;
+    codiceFiscale: string;
+    sesso: string;
+  };
+  sanitaria: {
+    patologia: string;
+    codiceColore: string;
+    modArrivo: string;
+    noteTriage: string;
+  };
+}
+
+export interface PatientAdmissionRes {
+  id: number;
+  braccialetto: string;
 }
