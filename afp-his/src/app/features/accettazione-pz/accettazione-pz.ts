@@ -9,6 +9,8 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { SelectModule } from 'primeng/select';
 import { FieldsetModule } from 'primeng/fieldset';
 import { TextareaModule } from 'primeng/textarea';
+import { PazienteManager } from '../../core/Pazienti/patient-manager';
+import { PatientAdmission } from '../../core/Pazienti/Pazienti.model';
 
 @Component({
   selector: 'his-accettazione-pz',
@@ -18,6 +20,7 @@ import { TextareaModule } from 'primeng/textarea';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccettazionePz {
+  PazienteManager = inject(PazienteManager)
   readonly maxDate = new Date();
   readonly sexOption = [{
     code: 'M',
@@ -70,7 +73,7 @@ export class AccettazionePz {
 
   onSubmit() {
     if(this.paziente.valid){
-    console.log(this.paziente.value);
+      this.PazienteManager.admitPatient(this.paziente.value as PatientAdmission);
     } else {
       this.paziente.markAllAsTouched();
     }

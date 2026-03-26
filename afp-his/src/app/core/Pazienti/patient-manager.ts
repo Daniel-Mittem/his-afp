@@ -1,8 +1,9 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { Paziente, PazienteDTO } from './Pazienti.model';
+import { PatientAdmission, PatientAdmissionRes, Paziente, PazienteDTO } from './Pazienti.model';
 import { APIResponse } from '../models/APIResponse.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +11,7 @@ import { environment } from '../../../environments/environment.development';
 
 export class PazienteManager {
   #http = inject(HttpClient);
+  readonly #router = inject(Router);
   #ListaPz = signal<Paziente[]>([]);
   #listaPzFiltered = signal<Paziente[]>(this.#ListaPz());
   ListaPz = this.#listaPzFiltered.asReadonly();
@@ -40,6 +42,19 @@ export class PazienteManager {
       }
     });
   }
+
+  public admitPatient(pz: PatientAdmission) {
+    this.#http.post<APIResponse<PatientAdmissionRes>>(`${environment.apiUrl}/admissions`, pz)
+      .subscribe({
+        next: (res) => {
+          this.#router.navigate([`/modifica-pz/${res.data.id}`]);
+      },
+        error: (err) => {
+          console.error("Errore durante l'ammissione del pazinete:", err);
+      },
+    })
+  }
+
   public mapPazienteDTOToPaziente(pz: PazienteDTO): Paziente {
     return {
       id: pz.id.toString(),
