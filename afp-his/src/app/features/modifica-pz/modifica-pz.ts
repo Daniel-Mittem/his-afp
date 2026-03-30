@@ -1,6 +1,6 @@
 import { httpResource } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, effect, inject, input, untracked } from '@angular/core';
-import { PazienteDTO } from '../../core/Pazienti/Pazienti.model';
+import { PatientAdmission, PazienteDTO } from '../../core/Pazienti/Pazienti.model';
 import { APIResponse } from '../../core/models/APIResponse.model';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
@@ -12,6 +12,7 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { TextareaModule } from 'primeng/textarea';
 import { GestioneRisorse } from '../../core/Risorse/gestione-risorse';
 import { formatDate } from '@angular/common';
+import { PazienteManager } from '../../core/Pazienti/patient-manager';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class ModificaPz {
   patientID = input<string>();
   readonly #fb = inject(FormBuilder);
   gestioneRisorse = inject(GestioneRisorse);
+  patientManager = inject(PazienteManager);
 
   readonly maxDate = new Date();
   readonly sexOption = [{
@@ -78,7 +80,8 @@ export class ModificaPz {
   
     onSubmit() {
       if(this.paziente.valid){
-        //this.PazienteManager.admitPatient(this.paziente.value as PatientAdmission);
+        console.log(this.paziente.value);
+        this.patientManager.updatePatientInfo(Number(this.patientID()) || -1, this.paziente.value.residenza as Pick<PatientAdmission, 'residenza'>);
       } else {
         this.paziente.markAllAsTouched();
       }
