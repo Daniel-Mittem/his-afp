@@ -186,3 +186,44 @@ export const changeAdmissionsStatusByIDFn = catchAsync(async (req, res, next) =>
 		data: result.rows[0]
 	});
 });
+
+/**
+ * PATCH /patients/:id
+ * Aggiorna i dati anagrafici (indirizzo) di un paziente.
+ */
+export const updatePatientInformationFn = catchAsync(async (req, res, next) => {
+	const {id} = req.params;
+	const {
+		via,
+		civico,
+		comune,
+		provincia,
+	} = req.body;
+
+	// Validazione di base per assicurarsi che almeno un campo sia fornito
+	if (!via && !via && !comune && !provincia) {
+		return next(new AppError("Nessun dato da aggiornare fornito.", 400));
+	}
+
+	const result = await pool.query(
+		`UPDATE patients
+         SET indirizzo_via    = $1,
+             indirizzo_civico = $2,
+             comune           = $3,
+             provincia        = $4
+         WHERE id = $5
+         RETURNING id, nome, cognome, indirizzo_via, indirizzo_civico, comune, provincia`,
+		[via, civico, comune, provincia, id]
+	);
+
+	if (result.rows.length === 0) {
+		return next(new AppError("Paziente non trovato con questo ID", 404));
+	}
+
+	res.status(200).json({
+		status: 'success',
+		message: 'Dati del paziente aggiornati con successo.',
+		data: result.rows[0]
+	});
+});
+

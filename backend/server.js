@@ -12,7 +12,8 @@ import {
   changeAdmissionsStatusByIDFn,
   insertNewAdmissionFn,
   retrieveActiveAdmissionsFn,
-  retrieveAdmissionByIDFn
+  retrieveAdmissionByIDFn,
+  updatePatientInformationFn
 } from "./services/patients.js";
 import {logger} from "./services/logger.js";
 import {AppError} from "./utils/errorHandler.js";
@@ -63,6 +64,7 @@ app.get('/admissions', authenticateTokenFn, retrieveActiveAdmissionsFn);
 app.get('/admissions/:id', authenticateTokenFn, retrieveAdmissionByIDFn);
 app.post('/admissions', authenticateTokenFn, insertNewAdmissionFn);
 app.patch('/admissions/:id/status', authenticateTokenFn, changeAdmissionsStatusByIDFn);
+app.patch('/patients/:id', authenticateTokenFn, updatePatientInformationFn);
 
 // --- ROTTA NON TROVATA ---
 app.all(/(.*)/, (req, res, next) => {
