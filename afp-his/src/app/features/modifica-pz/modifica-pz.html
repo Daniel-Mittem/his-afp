@@ -165,11 +165,57 @@
       </div>
 
     </p-fieldset>
+
+    <p-fieldset formGroupName="residenza" legend="Dati di residenza:">
+      <div class="flex flex-col p-4">
+        <label for="via">Via:</label>
+        <input formControlName="via" [invalid]="checkFormControl('residenza.via')" id="via" pInputText type="text"
+          class="w-2xs">
+        @if(checkFormControl('residenza.via')){
+        @if(checkFormControlError('residenza.via', 'required')){
+        <p-message severity="error" variant="simple">Il campo 'via' è obbligatorio </p-message>
+        }
+        }
+      </div>
+
+      <div class="flex flex-col p-4">
+        <label for="civico">Civico:</label>
+        <input formControlName="civico" [invalid]="checkFormControl('residenza.civico')" id="civico" pInputText type="text"
+          class="w-2xs">
+        @if(checkFormControl('residenza.civico')){
+        @if(checkFormControlError('residenza.civico', 'required')){
+        <p-message severity="error" variant="simple">Il campo 'civico' è obbligatorio </p-message>
+        }
+        }
+      </div>
+
+      <div class="flex flex-col p-4">
+        <label for="comune">Comune:</label>
+        <input formControlName="comune" [invalid]="checkFormControl('residenza.comune')" id="comune" pInputText type="text"
+          class="w-2xs">
+        @if(checkFormControl('residenza.comune')){
+        @if(checkFormControlError('residenza.comune', 'required')){
+        <p-message severity="error" variant="simple">Il campo 'comune' è obbligatorio </p-message>
+        }
+        }
+      </div>
+
+      <div class="flex flex-col p-4">
+        <label for="provincia">Provincia:</label>
+        <input formControlName="provincia" [invalid]="checkFormControl('residenza.provincia')" id="provincia" pInputText type="text"
+          class="w-2xs">
+        @if(checkFormControl('residenza.provincia')){
+        @if(checkFormControlError('residenza.provincia', 'required')){
+        <p-message severity="error" variant="simple">Il campo 'provincia' è obbligatorio </p-message>
+        }
+        }
+      </div>
+    </p-fieldset>
   </div>
 
   <div class="flex flex-row gap-4 pt-3">
     <p-button label="invia" type="submit" />
 
-    <p-button (onClick)="paziente.reset()" label="Reset" severity="warn" variant="outlined" />
+    <p-button (onClick)="paziente.get('residenza')?.reset()" label="Reset" severity="warn" variant="outlined" />
   </div>
 </form>

@@ -28,6 +28,10 @@ export interface PazienteDTO {
     coloreNome: string;
     modalitaArrivoCode: string;
     modalitaArrivoDescrizione: string;
+    indirizzoVia: string;
+    indirizzoCivico: string;
+    comune: string;
+    provincia: string;
 }
 
 export interface PatientAdmission{
