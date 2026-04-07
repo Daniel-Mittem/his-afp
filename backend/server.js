@@ -5,21 +5,22 @@ import {authenticateTokenFn, loginFn} from "./services/auth.js";
 import {retrieveHealthStatusFn} from "./services/health.js";
 import {retrieveArrivalModesFn, retrievePathologiesFn, retrieveTriageColorsFn} from "./services/resources.js";
 import {
-  changeAdmissionsStatusByIDFn,
-  insertNewAdmissionFn,
-  retrieveActiveAdmissionsFn,
-  retrieveAdmissionByIDFn,
-  updatePatientInformationFn
+	changeAdmissionsStatusByIDFn,
+	insertNewAdmissionFn,
+	retrieveActiveAdmissionsFn,
+	retrieveAdmissionByIDFn,
+	retrieveDischargedAdmissionsFn,
+	updatePatientInformationFn
 } from "./services/patients.js";
 import {logger} from "./services/logger.js";
 import {AppError, globalErrorHandler} from "./utils/errorHandler.js";
 import {getContentType, getMetrics, httpRequestDurationMicroseconds} from "./services/metrics.js";
 import {
-  activateUserFn,
-  checkUsernameAvailabilityFn,
-  createUserFn,
-  deactivateUserFn,
-  retrieveAllStaffFn
+	activateUserFn,
+	checkUsernameAvailabilityFn,
+	createUserFn,
+	deactivateUserFn,
+	retrieveAllStaffFn
 } from "./services/staff.js";
 
 // --- CONFIGURAZIONE SERVER EXPRESS ---
@@ -64,6 +65,7 @@ app.get('/resources/arrival-modes', authenticateTokenFn, retrieveArrivalModesFn)
 // 3. GESTIONE PAZIENTI / ACCESSI
 app.get('/admissions', authenticateTokenFn, retrieveActiveAdmissionsFn);
 app.get('/admissions/:id', authenticateTokenFn, retrieveAdmissionByIDFn);
+app.get('/admissions/reports/discharged', authenticateTokenFn, retrieveDischargedAdmissionsFn)
 app.post('/admissions', authenticateTokenFn, insertNewAdmissionFn);
 app.patch('/admissions/:id/status', authenticateTokenFn, changeAdmissionsStatusByIDFn);
 app.patch('/patients/:id', authenticateTokenFn, updatePatientInformationFn);
