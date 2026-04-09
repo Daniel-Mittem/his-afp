@@ -66,7 +66,8 @@ CREATE TABLE IF NOT EXISTS users
     username   VARCHAR(50) UNIQUE NOT NULL,
     password   VARCHAR(255)       NOT NULL,
     role       user_role          NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP                   DEFAULT CURRENT_TIMESTAMP,
+    is_active  BOOLEAN            NOT NULL DEFAULT TRUE
 );
 
 CREATE TABLE IF NOT EXISTS patients
@@ -100,7 +101,8 @@ CREATE TABLE IF NOT EXISTS admissions
     modalita_arrivo_code VARCHAR(10) REFERENCES arrival_modes (code) ON DELETE RESTRICT,
 
     note_triage          TEXT,
-    updated_at           TIMESTAMP                   DEFAULT CURRENT_TIMESTAMP
+    updated_at           TIMESTAMP                   DEFAULT CURRENT_TIMESTAMP,
+    data_ora_dimissione  TIMESTAMP
 );
 CREATE INDEX IF NOT EXISTS idx_admissions_braccialetto ON admissions (braccialetto);
 
@@ -256,14 +258,15 @@ WHERE codice_fiscale = 'SPSMRC00A10F839V'
 ON CONFLICT (braccialetto) DO NOTHING;
 
 INSERT INTO admissions (patient_id, braccialetto, stato, patologia_code, codice_colore, modalita_arrivo_code,
-                        note_triage)
+                        note_triage, data_ora_dimissione)
 SELECT id,
        TO_CHAR(CURRENT_DATE, 'YYYY') || '-0007',
        'DIM',
        'C19',
        'AZZURRO',
        'AMB',
-       'Febbre alta e dolori articolari'
+       'Febbre alta e dolori articolari',
+       NOW()
 FROM patients
 WHERE codice_fiscale = 'FRRLNE75P45D612J'
 ON CONFLICT (braccialetto) DO NOTHING;

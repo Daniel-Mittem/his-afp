@@ -314,6 +314,12 @@
               Il campo 'Provincia' è obbligatorio.
             </p-message>
           }
+          @if (checkFormControlError('residenza.provincia', 'maxlength')) {
+            <p-message severity="error" variant="simple">
+              Il campo 'Provincia' non può superare i
+              {{ checkFormControlError('residenza.provincia', 'maxlength').requiredLength }} caratteri.
+            </p-message>
+          }
         }
       </div>
     </p-fieldset>
@@ -324,7 +330,7 @@
       type="submit"
     />
     <p-button
-      (onClick)="paziente.reset()"
+      (onClick)="paziente.get('residenza')?.reset()"
       label="Reset"
       severity="warn"
       variant="outlined"

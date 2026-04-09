@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input, untracked } from '@angular/core';
 import { httpResource } from '@angular/common/http';
-import { PazienteDTO } from '../../core/Pazienti/Pazienti.model';
+import { PatientAdmission, PazienteDTO } from '../../core/Pazienti/Pazienti.model';
 import { APIResponse } from '../../core/models/APIResponse.model';
 import { Button } from 'primeng/button';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -12,6 +12,7 @@ import { Select } from 'primeng/select';
 import { Textarea } from 'primeng/textarea';
 import { GestioneRisorse } from '../../core/Risorse/gestione-risorse';
 import { formatDate } from '@angular/common';
+import { PatientManager } from '../../core/Pazienti/patient-manager';
 
 @Component({
   selector: 'his-modifica-pz',
@@ -33,6 +34,7 @@ import { formatDate } from '@angular/common';
 export class ModificaPz {
   patientId = input<string>();
   gestioneRisorse = inject(GestioneRisorse);
+  patientManager = inject(PatientManager);
   patientReq = httpResource<APIResponse<PazienteDTO>>(
     () => `http://localhost:3000/admissions/${this.patientId()}`,
   );
@@ -71,7 +73,7 @@ export class ModificaPz {
       via: ['', [Validators.required]],
       civico: ['', [Validators.required]],
       comune: ['', [Validators.required]],
-      provincia: ['', [Validators.required]],
+      provincia: ['', [Validators.required, Validators.maxLength(5)]],
     }),
   });
 
@@ -108,7 +110,7 @@ export class ModificaPz {
             },
           });
           this.paziente.get('anagrafica')?.disable();
-          //this.paziente.get('sanitaria.codiceColore')?.disable();
+          this.paziente.get('sanitaria')?.disable();
         });
       }
     });
@@ -133,7 +135,10 @@ export class ModificaPz {
   onSubmit() {
     if (this.paziente.valid) {
       console.log(this.paziente.value);
-      //this.patientManager.admitPatient(this.paziente.value as PatientAdmission);
+      this.patientManager.updatePatientInfo(
+        Number(this.patientId()) || -1,
+        this.paziente.value.residenza as Pick<PatientAdmission, 'residenza'>,
+      );
     } else {
       this.paziente.markAllAsTouched();
     }

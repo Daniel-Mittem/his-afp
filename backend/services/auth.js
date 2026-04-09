@@ -21,17 +21,17 @@ export const authenticateTokenFn = (req, res, next) => {
 	const authHeader = req.headers['authorization'];
 	const token = authHeader?.split(' ')[1]; // Bearer TOKEN
 
-	if (!token) return res.sendStatus(401);
+	if (!token) return next(new AppError('Token mancante', 401));
 
 	jwt.verify(token, JWT_SECRET, (err, user) => {
-		if (err) return res.sendStatus(403);
+		if (err) return next(new AppError('Token non valido', 403));
 		req.user = user;
 		next();
 	});
 };
 
 export const loginFn = catchAsync(async (req, res, next) => {
-	const { username, password } = req.body;
+	const {username, password} = req.body;
 	// Validazione base
 	if (!username || !password) {
 		return next(new AppError('Inserisci username e password', 400));
@@ -51,16 +51,16 @@ export const loginFn = catchAsync(async (req, res, next) => {
 	}
 
 	const token = jwt.sign(
-		{ id: user.id, username: user.username, role: user.role },
+		{id: user.id, username: user.username, role: user.role},
 		JWT_SECRET,
-		{ expiresIn: '1h' }
+		{expiresIn: '1h'}
 	);
 
 	res.status(200).json({
 		status: 'success',
 		data: {
 			token,
-			user: { username: user.username, role: user.role }
+			user: {username: user.username, role: user.role}
 		}
 	});
 });
