@@ -24,6 +24,7 @@ import { PazienteManager } from '../../core/Pazienti/patient-manager';
 })
 export class ModificaPz {
   patientID = input<string>();
+  patientInfo = input.required<APIResponse<PazienteDTO>>();
   readonly #fb = inject(FormBuilder);
   gestioneRisorse = inject(GestioneRisorse);
   patientManager = inject(PazienteManager);
@@ -37,8 +38,6 @@ export class ModificaPz {
     code: 'F',
     desc: 'Femmina',
   }]
-
-  patientReq = httpResource<APIResponse<PazienteDTO>>(() => `http://localhost:3000/admissions/${this.patientID()}`, {});
 
   paziente = this.#fb.group({
     anagrafica: this.#fb.group({
@@ -90,15 +89,15 @@ export class ModificaPz {
 
   constructor() {
     effect(() => {
-      const pzVal = this.patientReq.value();
+      const pzVal = this.patientInfo();
       if (this.patientID() === undefined) {
         console.log('No patient ID provided');
       }
-
-      if (this.patientReq.hasValue()) {
+      
+      const data = this.patientInfo().data;
+      if (data) {
         untracked(() => {
           if (pzVal?.data) {
-            const data = pzVal.data;
             this.paziente.patchValue({
               anagrafica: {
                 nome: data.nome,

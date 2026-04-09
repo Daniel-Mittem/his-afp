@@ -3,6 +3,7 @@ import { ListaPz } from './features/lista-pz/lista-pz';
 import { ModificaPz } from './features/modifica-pz/modifica-pz';
 import { AccettazionePz } from './features/accettazione-pz/accettazione-pz';
 import { StatoServizi } from './features/stato-servizi/stato-servizi';
+import { patientInfoResolver } from './core/Pazienti/resolver/patient-info-resolver';
 
 export const routes: Routes = [
     {
@@ -11,11 +12,14 @@ export const routes: Routes = [
     },
     {
         path: 'modifica-pz',
-          loadComponent: () => import('./features/modifica-pz/modifica-pz').then((m) => m.ModificaPz),
+        loadComponent: () => import('./features/modifica-pz/modifica-pz').then((m) => m.ModificaPz),
     },
     {
         path: 'modifica-pz/:patientID',
-         loadComponent: () => import('./features/modifica-pz/modifica-pz').then((m) => m.ModificaPz),
+        loadComponent: () => import('./features/modifica-pz/modifica-pz').then((m) => m.ModificaPz),
+        resolve: {
+            patientInfo: patientInfoResolver,
+        }
     }, 
     {
         path: 'accettazione-pz',
