@@ -30,5 +30,44 @@ services:
       - db
     restart: always
 
+  fe-sio:
+    build:
+      context: ./afp-his
+      dockerfile: Dockerfile
+    image: his-afp:${SVI_VERSION:-latest}
+    container_name: fe-sio
+
+  # AMBIENTE PRODUZIONE (BLUE)
+  fe-prod:
+    build:
+      context: ./afp-his
+      dockerfile: Dockerfile
+    image: his-afp:${PROD_VERSION:-latest}
+    container_name: fe-prod
+
+  fe-test:
+    build:
+      context: ./afp-his
+      dockerfile: Dockerfile
+    image: his-afp:${TEST_VERSION:-latest}
+    container_name: fe-test
+
+  gateway:
+    image: nginx:alpine
+    container_name: sio-gateway
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "8999:8999"
+    volumes:
+      - ./gateway:/etc/nginx/conf.d/:ro
+    depends_on:
+      - fe-sio
+      - fe-prod
+      - fe-test
+    restart: always
+
+
+
 volumes:
   pg_data:
