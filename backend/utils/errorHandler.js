@@ -63,6 +63,9 @@ export const globalErrorHandler = (err, req, res, next) => {
 			body: req.body
 		});
 	} else {
+		if (err.statusCode === 401) {
+			res.setHeader('WWW-Authenticate', 'Bearer realm="sio"');
+		}
 		logger.warn(`⚠️ HANDLED ERROR: ${err.message}`, {
 			code: err.statusCode,
 			url: req.originalUrl
@@ -82,6 +85,6 @@ export const globalErrorHandler = (err, req, res, next) => {
 		status: err.status,
 		code: err.statusCode,
 		message: err.message,
-		...(process.env.NODE_ENV !== 'production' && { stack: err.stack })
+		...(process.env.NODE_ENV !== 'production' && {stack: err.stack})
 	});
 };

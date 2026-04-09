@@ -66,8 +66,6 @@ Gli errori sono gestiti centralmente e restituiscono sempre un JSON strutturato.
 L'autenticazione è gestita tramite **JWT (JSON Web Token)**.
 > Il token ha una validità di **1 ora**.
 
-TODO: Implementare refresh token.
-
 **Header Richiesto (per rotte protette):**
 `Authorization: Bearer <tuo_token_jwt>`
 
@@ -106,6 +104,18 @@ Ottiene il token di sessione.
       "role": "DOC"
     }
   }
+}
+```
+
+**Errori:**
+
+* `401 Unauthorized` se le credenziali sono errate.
+
+```json
+{
+  "status": "fail",
+  "code": 401,
+  "message": "Credenziali non valide"
 }
 ```
 
@@ -270,7 +280,42 @@ I dati sono appiattiti (flattened) per facilitare la visualizzazione in tabella.
 Recupera il singolo accesso per ID.
 
 * **Endpoint:** `GET /admissions/:id`
+* **Response (200 OK):**
+
+```json
+{
+  "status": "success",
+  "data": {
+    "id": 12,
+    "braccialetto": "2024-0045",
+    "dataOraIngresso": "2024-01-22T09:15:00.000Z",
+    "stato": "ATT",
+    "noteTriage": "Dolore toracico diffuso",
+    "nome": "Mario",
+    "cognome": "Rossi",
+    "dataNascita": "1980-05-20",
+    "codiceFiscale": "RSSMRA80E20H501U",
+    "sex": "M",
+    "patologiaCode": "C02",
+    "patologiaDescrizione": "Cardiocircolatoria",
+    "coloreCode": "ROSSO",
+    "coloreHex": "#FF4E4A",
+    "coloreNome": "Emergenza",
+    "modalitaArrivoCode": "AMB",
+    "modalitaArrivoDescrizione": "Ambulanza 118"
+  }
+}
+```
+
 * **Errori:** `404 Not Found` se l'ID non esiste.
+
+```json
+{
+  "status": "fail",
+  "code": 404,
+  "message": "Accesso non trovato con questo ID"
+}
+```
 
 ### ➕ 4.3 Nuovo Accesso (Triage)
 
@@ -312,6 +357,17 @@ Se il paziente esiste già (check su Codice Fiscale), aggiorna i dati anagrafici
 }
 ```
 
+* **Errori:**
+    * `400 Bad Request` se mancano campi obbligatori o se i codici non corrispondono ai dizionari.
+
+```json
+{
+  "status": "fail",
+  "code": 400,
+  "message": "Dati anagrafici incompleti"
+}
+```
+
 ### 🔄 4.4 Cambio Stato
 
 Aggiorna lo stato di avanzamento del paziente.
@@ -332,9 +388,194 @@ Aggiorna lo stato di avanzamento del paziente.
 }
 ```
 
+**Response (200 OK):**
+
+```json
+{
+  "status": "success",
+  "message": "Stato aggiornato con successo",
+  "data": {
+    "id": 12,
+    "stato": "VIS"
+  }
+}
+```
+
+**Errori:**
+
+* `400 Bad Request` se lo stato non è valido.
+
+```json
+{
+  "status": "fail",
+  "code": 400,
+  "message": "Stato non valido. Ammessi: ATT, VIS, OBI, RIC, DIM"
+}
+```
+
+* `404 Not Found` se l'ID non esiste.
+
+```json
+{
+  "status": "fail",
+  "code": 404,
+  "message": "Ammissione non trovata"
+}
+```
+
+## 5. Gestione personale sanitario (Utenti)
+
+Gestione anagrafica operatori e validazione asincrona.
+
+### 5.1 Lista Operatori Sanitari
+
+Recupera la lista di tutto lo staff attivo e disabilitato.
+
+* **Endpoint:** `GET /users`
+
+* **Risposta (200):**
+
+```json
+{
+  "status": "success",
+  "results": 12,
+  "data": [
+    {
+      "id": 1,
+      "username": "mrossi",
+      "role": "DOC",
+      "isActive": true
+    },
+    {
+      "id": 2,
+      "username": "bbianchi",
+      "role": "INF",
+      "isActive": true
+    }
+  ]
+}
+```
+
+### 5.2 Verifica Disponibilità Username
+
+Verifica se uno username è già utilizzato.
+
+* **Endpoint**: `GET /users/check/:username`
+    * **Parametro**: `username` (Nome Utente da verificare)
+
+**Risposta (200):**
+
+```json
+{
+  "status": "success",
+  "data": {
+    "available": true
+  }
+}
+```
+
+| available | Significato                                   |
+|-----------|-----------------------------------------------|
+| `true`    | Nome utente disponibile per essere utilizzato |
+| `false`   | Nome utente non utilizzabile                  |
+
+### 5.3 Creazione e Gestione Utenti
+
+Crea un nuovo operatore sanitario.
+> L'operatore viene creato con `isActive: true` di default. Per disattivarlo, utilizzare l'endpoint di disattivazione.
+
+* **Endpoint**: `POST /users`
+
+**Body:**
+
+```json
+{
+  "username": "mario.rossi",
+  "password": "1234",
+  "role": "DOC"
+}
+```
+
+* **Risposta (201):**
+
+```json
+{
+  "status": "success",
+  "data": {
+    "id": 4,
+    "username": "mario.rossi",
+    "role": "DOC"
+  }
+}
+```
+
+Ruoli disponibili:
+
+| Role  | Descrizione    |
+|-------|----------------|
+| `DOC` | Medico         |
+| `INF` | Infermiere     |
+| `AMM` | Amministrativo |
+
+### 5.4 Disattivazione Utente
+
+Disattivazione logica di un utente.
+Viene impostato il campo `isActive` a `false` senza eliminare fisicamente il record.
+
+* **Endpoint:** `PATCH /users/:id/deactivate`
+    * **Parametro:** `id` (ID dell'utente da disattivare)
+
+* **Risposta (200):**
+
+```json
+{
+  "status": "success",
+  "message": "Operatore disattivato correttamente"
+}
+```
+
+* **Errori:**
+    * `404 Not Found` se l'ID non esiste.
+
+```json
+{
+  "status": "fail",
+  "code": 404,
+  "message": "Operatore non trovato"
+}
+```
+
+### 5.5 Abilitazione Utente
+
+Riattivazione di un utente disattivato.
+Viene impostato il campo `isActive` a `true`.
+
+* **Endpoint:** `PATCH /users/:id/deactivate`
+    * **Parametro:** `id` (ID dell'utente da attivare)
+
+* **Risposta (200):**
+
+```json
+{
+  "status": "success",
+  "message": "Operatore attivato correttamente"
+}
+```
+
+* **Errori:**
+    * `404 Not Found` se l'ID non esiste.
+
+```json
+{
+  "status": "fail",
+  "code": 404,
+  "message": "Operatore non trovato"
+}
+```
+
 ---
 
-## 5. Osservabilità & System
+## 6. Osservabilità & System
 
 * **Health Check:** `GET /health`
 * Restituisce lo stato del servizio e la connessione DB.
@@ -375,7 +616,7 @@ Caso in cui il database è offline o non raggiungibile.
 
 ---
 
-## 6. Frontend Integration (Angular)
+## 7. Frontend Integration (Angular)
 
 Copiare le seguenti interfacce nel progetto Angular (percorso suggerito: `src/app/core/models`).
 

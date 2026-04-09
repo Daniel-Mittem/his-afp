@@ -60,25 +60,26 @@ export const retrieveAdmissionByIDFn = catchAsync(async (req, res, next) => {
 	const query = `
         SELECT a.id,
                a.braccialetto,
-               a.data_ora_ingresso AS "dataOraIngresso",
+               a.data_ora_ingresso   AS "dataOraIngresso",
                a.stato,
-               a.note_triage       AS "noteTriage",
+               a.note_triage         AS "noteTriage",
                p.nome,
                p.cognome,
-               p.data_nascita      AS "dataNascita",
-               p.codice_fiscale    AS "codiceFiscale",
+               p.data_nascita        AS "dataNascita",
+               p.codice_fiscale      AS "codiceFiscale",
                p.sex,
-               p.indirizzo_via     as "indirizzoVia",
-               p.indirizzo_civico  AS "indirizzoCivico",
+               p.indirizzo_via       as "indirizzoVia",
+               p.indirizzo_civico    AS "indirizzoCivico",
                p.comune,
                p.provincia,
-               path.code           AS "patologiaCode",
-               path.description    AS "patologiaDescrizione",
-               tc.code             AS "coloreCode",
-               tc.hex_value        AS "coloreHex",
-               tc.display_name     AS "coloreNome",
-               am.code             AS "modalitaArrivoCode",
-               am.description      AS "modalitaArrivoDescrizione"
+               path.code             AS "patologiaCode",
+               path.description      AS "patologiaDescrizione",
+               tc.code               AS "coloreCode",
+               tc.hex_value          AS "coloreHex",
+               tc.display_name       AS "coloreNome",
+               am.code               AS "modalitaArrivoCode",
+               am.description        AS "modalitaArrivoDescrizione",
+               a.data_ora_dimissione AS "dataOraDimissione"
         FROM admissions a
                  JOIN patients p ON a.patient_id = p.id
                  LEFT JOIN triage_colors tc ON a.codice_colore = tc.code
@@ -102,13 +103,20 @@ export const retrieveAdmissionByIDFn = catchAsync(async (req, res, next) => {
  * POST /admissions
  * Crea un nuovo accesso. Gestisce Paziente e Admission in transazione.
  */
-export const insertNewAdmissionFn = catchAsync(async (req, res) => {
+export const insertNewAdmissionFn = catchAsync(async (req, res, next) => {
 	const {
 		nome, cognome, dataNascita, sesso, codiceFiscale, // Dati Paziente
 	} = req.body.anagrafica;
 	const {
 		patologia, codiceColore, modArrivo, noteTriage // Dati Accesso (Notare i suffix 'Code')
 	} = req.body.sanitaria;
+
+	if (!nome || !cognome || !dataNascita || !sesso || !codiceFiscale) {
+		return next(new AppError("Dati anagrafici incompleti", 400));
+	}
+	if (!patologia || !codiceColore || !modArrivo) {
+		return next(new AppError("Dati sanitari incompleti", 400));
+	}
 
 	const client = await pool.connect();
 
@@ -148,42 +156,91 @@ export const insertNewAdmissionFn = catchAsync(async (req, res) => {
 	await client.query('COMMIT');
 
 	// Restituisco l'ID creato così il frontend può navigare al dettaglio
-	res.status(201).json({
-		status: 'success',
-		message: "Accesso creato con successo",
-		data: {
-			id: insertAdm.rows[0].id,
-			braccialetto: insertAdm.rows[0].braccialetto
-		}
-	});
+	res
+		.status(201)
+		.setHeader('Location', `/admissions/${insertAdm.rows[0].id}`)
+		.json({
+			status: 'success',
+			message: "Accesso creato con successo",
+			data: {
+				id: insertAdm.rows[0].id,
+				braccialetto: insertAdm.rows[0].braccialetto
+			}
+		});
 });
 
 /**
  * PATCH /admissions/:id/status
+ * Aggiorna lo stato e, se 'DIM', imposta la data di dimissione.
  */
 export const changeAdmissionsStatusByIDFn = catchAsync(async (req, res, next) => {
 	const {id} = req.params;
-	const {nuovoStato} = req.body; // Es. 'VIS', 'DIM'
+	const {nuovoStato} = req.body;
 
-	// Validazione semplice
 	const allowed = ['ATT', 'VIS', 'OBI', 'RIC', 'DIM'];
 	if (!allowed.includes(nuovoStato)) {
-		return next(new AppError("Stato non valido fornito", 400));
+		return next(new AppError("Stato non valido. Ammessi: ATT, VIS, OBI, RIC, DIM", 400));
 	}
-	const result = await pool.query(
-		`UPDATE admissions
-         SET stato      = $1,
-             updated_at = NOW()
-         WHERE id = $2
-         RETURNING id, stato`,
-		[nuovoStato, id]
-	);
 
-	if (result.rows.length === 0) return next(new AppError("Accesso non trovato", 404));
+	// Se lo stato è DIM, aggiorniamo anche data_ora_dimissione
+	let query;
+	let params;
+
+	if (nuovoStato === 'DIM') {
+		query = `
+            UPDATE admissions
+            SET stato               = $1,
+                data_ora_dimissione = NOW()
+            WHERE id = $2
+            RETURNING id, stato, data_ora_dimissione AS "dataOraDimissione"
+		`;
+		params = [nuovoStato, id];
+	} else {
+		query = `
+            UPDATE admissions
+            SET stato = $1
+            WHERE id = $2
+            RETURNING id, stato
+		`;
+		params = [nuovoStato, id];
+	}
+
+	const result = await pool.query(query, params);
+
+	if (result.rowCount === 0) {
+		return next(new AppError("Ammissione non trovata", 404));
+	}
 
 	res.status(200).json({
 		status: 'success',
-		data: result.rows[0]
+		data: result.rows[0],
+		message: `Stato aggiornato a ${nuovoStato}`
+	});
+});
+
+/**
+ * GET /admissions/reports/discharged
+ * Recupera i pazienti dimessi nelle ultime 24 ore.
+ */
+export const retrieveDischargedAdmissionsFn = catchAsync(async (req, res) => {
+	const query = `
+        SELECT a.braccialetto,
+               p.nome,
+               p.cognome,
+               a.data_ora_ingresso   AS "dataOraIngresso",
+               a.data_ora_dimissione AS "dataOraDimissione"
+        FROM admissions a
+                 JOIN patients p ON a.patient_id = p.id
+        WHERE a.stato = 'DIM'
+          AND a.data_ora_dimissione >= NOW() - INTERVAL '24 hours'
+        ORDER BY a.data_ora_dimissione DESC
+	`;
+	const result = await pool.query(query);
+
+	res.status(200).json({
+		status: 'success',
+		results: result.rowCount,
+		data: result.rows
 	});
 });
 
@@ -227,3 +284,32 @@ export const updatePatientInformationFn = catchAsync(async (req, res, next) => {
 	});
 });
 
+// GET /patients/search - Ricerca avanzata (Fuzzy)
+export const searchPatientsFn = catchAsync(async (req, res) => {
+	const {cf, nome, cognome, data_nascita} = req.query;
+	let query = `SELECT *
+                 FROM patients
+                 WHERE 1 = 1`;
+	const params = [];
+
+	if (cf) {
+		query += ` AND codice_fiscale = $${params.length + 1}`;
+		params.push(cf.toUpperCase());
+	} else {
+		if (nome) {
+			query += ` AND nome ILIKE $${params.length + 1}`;
+			params.push(`%${nome}%`);
+		}
+		if (cognome) {
+			query += ` AND cognome ILIKE $${params.length + 1}`;
+			params.push(`%${cognome}%`);
+		}
+		if (data_nascita) {
+			query += ` AND data_nascita = $${params.length + 1}`;
+			params.push(data_nascita);
+		}
+	}
+
+	const result = await pool.query(query, params);
+	res.status(200).json({status: 'success', results: result.rowCount, data: result.rows});
+});
