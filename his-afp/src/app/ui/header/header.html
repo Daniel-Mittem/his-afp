@@ -12,7 +12,23 @@
     class="pl-1"
   >
     <h1 class="text-4xl font-bold text-primary">{{ reparto }}</h1>
-    <p class="text-md text-primary">{{ struttura }}</p>
+    <p class="text-md text-primary">
+      {{ struttura }} -
+      @switch (type) {
+        @case ('PROD') {
+          <p-tag severity="info" value="v{{version}} - {{type}}"/>
+        }
+        @case ('TEST') {
+          <p-tag severity="success" value="v{{version}} - {{type}}"/>
+        }
+        @case ('SVI') {
+          <p-tag severity="contrast" value="v{{version}} - {{type}}"/>
+        }
+        @case ('LOCAL') {
+          <p-tag severity="secondary" value="v{{version}} - {{type}}"/>
+        }
+      }
+    </p>
   </div>
 
   <!--  DIVIDER-->
