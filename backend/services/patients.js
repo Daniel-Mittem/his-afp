@@ -1,5 +1,6 @@
 import {pool} from "./dbSession.js";
 import {AppError, catchAsync} from "../utils/errorHandler.js";
+import {logger} from "./logger.js";
 
 /**
  * GET /admissions
@@ -288,27 +289,33 @@ export const updatePatientInformationFn = catchAsync(async (req, res, next) => {
 export const searchPatientsFn = catchAsync(async (req, res) => {
 	const {cf, nome, cognome, data_nascita} = req.query;
 	let query = `SELECT *
-                 FROM patients
-                 WHERE 1 = 1`;
+                 FROM patients`;
 	const params = [];
+	logger.info(`Ricerca pazienti con parametri: cf=${cf}, nome=${nome}, cognome=${cognome}, data_nascita=${data_nascita}`);
+
+	if (!cf && !nome && !cognome && !data_nascita) {
+		return res.status(400).json({status: 'fail', message: "Almeno un parametro di ricerca è richiesto"});
+	}
+
+	if (cf && (nome || cognome || data_nascita)) {
+		logger.warn("Ricerca con codice fiscale e altri parametri. Il codice fiscale sovrascriverà gli altri filtri.");
+	}
 
 	if (cf) {
-		query += ` AND codice_fiscale = $${params.length + 1}`;
+		query += ` WHERE codice_fiscale = $${params.length + 1}`;
 		params.push(cf.toUpperCase());
 	} else {
-		if (nome) {
-			query += ` AND nome ILIKE $${params.length + 1}`;
-			params.push(`%${nome}%`);
+		if (!nome || !cognome || !data_nascita) {
+			return res.status(400).json({
+				status: 'fail',
+				message: "Senza codice fiscale, nome, cognome e data di nascita sono obbligatori."
+			});
 		}
-		if (cognome) {
-			query += ` AND cognome ILIKE $${params.length + 1}`;
-			params.push(`%${cognome}%`);
-		}
-		if (data_nascita) {
-			query += ` AND data_nascita = $${params.length + 1}`;
-			params.push(data_nascita);
-		}
+		query += ` WHERE nome ILIKE $${params.length + 1} AND cognome ILIKE $${params.length + 2} AND data_nascita = $${params.length + 3}`;
+		params.push(nome.toUpperCase(), cognome.toUpperCase(), data_nascita);
 	}
+
+	logger.info(`Esecuzione query di ricerca pazienti: ${query} con parametri ${JSON.stringify(params)}`);
 
 	const result = await pool.query(query, params);
 	res.status(200).json({status: 'success', results: result.rowCount, data: result.rows});

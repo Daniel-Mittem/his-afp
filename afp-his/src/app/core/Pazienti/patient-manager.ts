@@ -32,7 +32,7 @@ export class PazienteManager {
   }
 
   public fetchPazienti() {
-    this.#http.get<APIResponse<PazienteDTO[]>>(`${environment.apiUrl}/admissions`).subscribe({
+    this.#http.get<APIResponse<PazienteDTO[]>>(`/api/admissions`).subscribe({
       next: (res) => {
         const pz = res.data.map(p => this.mapPazienteDTOToPaziente(p));
         this.#ListaPz.set(pz);

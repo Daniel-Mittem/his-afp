@@ -69,9 +69,12 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          },
           "configurations": {
             "production": {
-              "buildTarget": "afp-his:build:production"
+              "buildTarget": "his-afp:build:production"
             },
             "development": {
               "buildTarget": "afp-his:build:development"
