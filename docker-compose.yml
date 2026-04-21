@@ -32,9 +32,9 @@ services:
 
   fe-sio:
     build:
-      context: ./his-afp
+      context: ./afp-his
       dockerfile: Dockerfile
-    image: his-afp:${SVI_VERSION:-latest}
+    image: afp-his:${SVI_VERSION:-latest}
     container_name: sio-fe-sio
     environment:
       APP_ENV: "SVI"
@@ -43,9 +43,9 @@ services:
   # AMBIENTE PRODUZIONE (BLUE)
   fe-prod:
     build:
-      context: ./his-afp
+      context: ./afp-his
       dockerfile: Dockerfile
-    image: his-afp:${PROD_VERSION:-latest}
+    image: afp-his:${PROD_VERSION:-latest}
     container_name: sio-fe-prod
     environment:
       APP_ENV: "PROD"
@@ -53,9 +53,9 @@ services:
 
   fe-test:
     build:
-      context: ./his-afp
+      context: ./afp-his
       dockerfile: Dockerfile
-    image: his-afp:${TEST_VERSION:-latest}
+    image: afp-his:${TEST_VERSION:-latest}
     container_name: sio-fe-test
     environment:
       APP_ENV: "TEST"
