@@ -17,8 +17,8 @@ services:
   backend:
     build: ./backend
     container_name: sio-backend
-    ports:
-      - "3000:3000"
+    #    ports:
+    #      - "3000:3000"
     environment:
       DB_HOST: db
       DB_USER: sio_user
@@ -28,6 +28,52 @@ services:
       AUTH_ENABLED: "false"
     depends_on:
       - db
+    restart: always
+
+  fe-sio:
+    build:
+      context: ./his-afp
+      dockerfile: Dockerfile
+    image: his-afp:${SVI_VERSION:-latest}
+    container_name: sio-fe-sio
+    environment:
+      APP_ENV: "SVI"
+      APP_VERSION: "${SVI_VERSION}"
+
+  # AMBIENTE PRODUZIONE (BLUE)
+  fe-prod:
+    build:
+      context: ./his-afp
+      dockerfile: Dockerfile
+    image: his-afp:${PROD_VERSION:-latest}
+    container_name: sio-fe-prod
+    environment:
+      APP_ENV: "PROD"
+      APP_VERSION: "${PROD_VERSION}"
+
+  fe-test:
+    build:
+      context: ./his-afp
+      dockerfile: Dockerfile
+    image: his-afp:${TEST_VERSION:-latest}
+    container_name: sio-fe-test
+    environment:
+      APP_ENV: "TEST"
+      APP_VERSION: "${TEST_VERSION}"
+
+  gateway:
+    image: nginx:alpine
+    container_name: sio-gateway
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "8999:8999"
+    volumes:
+      - ./gateway:/etc/nginx/conf.d/:ro
+    depends_on:
+      - fe-sio
+      - fe-prod
+      - fe-test
     restart: always
 
 volumes:

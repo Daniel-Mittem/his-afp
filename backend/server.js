@@ -10,6 +10,7 @@ import {
 	retrieveActiveAdmissionsFn,
 	retrieveAdmissionByIDFn,
 	retrieveDischargedAdmissionsFn,
+	searchPatientsFn,
 	updatePatientInformationFn
 } from "./services/patients.js";
 import {logger} from "./services/logger.js";
@@ -66,6 +67,7 @@ app.get('/resources/arrival-modes', authenticateTokenFn, retrieveArrivalModesFn)
 app.get('/admissions', authenticateTokenFn, retrieveActiveAdmissionsFn);
 app.get('/admissions/:id', authenticateTokenFn, retrieveAdmissionByIDFn);
 app.get('/admissions/reports/discharged', authenticateTokenFn, retrieveDischargedAdmissionsFn)
+app.get('/patients/search', authenticateTokenFn, searchPatientsFn);
 app.post('/admissions', authenticateTokenFn, insertNewAdmissionFn);
 app.patch('/admissions/:id/status', authenticateTokenFn, changeAdmissionsStatusByIDFn);
 app.patch('/patients/:id', authenticateTokenFn, updatePatientInformationFn);
