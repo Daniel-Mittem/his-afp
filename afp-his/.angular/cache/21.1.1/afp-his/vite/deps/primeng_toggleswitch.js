@@ -1,38 +1,38 @@
 import {
+  BaseEditableHolder
+} from "./chunk-BTVZELVM.js";
+import {
   AutoFocus
-} from "./chunk-VITLG6JB.js";
-import {
-  BaseModelHolder
-} from "./chunk-BS5HVRXE.js";
-import {
-  NG_VALUE_ACCESSOR
-} from "./chunk-4XIYIEEN.js";
+} from "./chunk-LCGAJUTY.js";
+import "./chunk-P3JVUK6K.js";
 import {
   PARENT_INSTANCE
-} from "./chunk-7ZYRMSOO.js";
+} from "./chunk-V2IQGOVC.js";
 import {
   Bind,
   BindModule
-} from "./chunk-7AUAGL5T.js";
+} from "./chunk-CHKYFAJ2.js";
 import {
   BaseStyle
-} from "./chunk-P7SRLIZ5.js";
+} from "./chunk-7SZ6LPRA.js";
+import {
+  NG_VALUE_ACCESSOR
+} from "./chunk-37AHJZRM.js";
 import {
   PrimeTemplate,
   SharedModule
-} from "./chunk-VDPRMUWP.js";
-import "./chunk-3PYSYKGX.js";
+} from "./chunk-6H34PKOV.js";
+import "./chunk-WWU2UCQD.js";
 import {
   CommonModule,
   NgTemplateOutlet
-} from "./chunk-UWTHVLL6.js";
-import "./chunk-YQRTGWSI.js";
+} from "./chunk-WZ75A7QT.js";
+import "./chunk-D47BY7ST.js";
 import {
   ChangeDetectionStrategy,
   Component,
   ContentChild,
   ContentChildren,
-  Directive,
   EventEmitter,
   HostListener,
   Injectable,
@@ -43,13 +43,11 @@ import {
   ViewChild,
   ViewEncapsulation,
   booleanAttribute,
-  computed,
   forwardRef,
   inject,
   input,
   numberAttribute,
   setClassMetadata,
-  signal,
   ɵɵHostDirectivesFeature,
   ɵɵInheritDefinitionFeature,
   ɵɵProvidersFeature,
@@ -60,7 +58,6 @@ import {
   ɵɵconditionalCreate,
   ɵɵcontentQuery,
   ɵɵdefineComponent,
-  ɵɵdefineDirective,
   ɵɵdefineInjectable,
   ɵɵdefineInjector,
   ɵɵdefineNgModule,
@@ -82,138 +79,7 @@ import {
   ɵɵviewQuery
 } from "./chunk-RTPOELZK.js";
 import "./chunk-RSS3ODKE.js";
-import {
-  __spreadProps,
-  __spreadValues
-} from "./chunk-GOMI4DH3.js";
-
-// node_modules/primeng/fesm2022/primeng-baseeditableholder.mjs
-var BaseEditableHolder = class _BaseEditableHolder extends BaseModelHolder {
-  /**
-   * There must be a value (if set).
-   * @defaultValue false
-   * @group Props
-   */
-  required = input(void 0, __spreadProps(__spreadValues({}, ngDevMode ? {
-    debugName: "required"
-  } : {}), {
-    transform: booleanAttribute
-  }));
-  /**
-   * When present, it specifies that the component should have invalid state style.
-   * @defaultValue false
-   * @group Props
-   */
-  invalid = input(void 0, __spreadProps(__spreadValues({}, ngDevMode ? {
-    debugName: "invalid"
-  } : {}), {
-    transform: booleanAttribute
-  }));
-  /**
-   * When present, it specifies that the component should have disabled state style.
-   * @defaultValue false
-   * @group Props
-   */
-  disabled = input(void 0, __spreadProps(__spreadValues({}, ngDevMode ? {
-    debugName: "disabled"
-  } : {}), {
-    transform: booleanAttribute
-  }));
-  /**
-   * When present, it specifies that the name of the input.
-   * @defaultValue undefined
-   * @group Props
-   */
-  name = input(...ngDevMode ? [void 0, {
-    debugName: "name"
-  }] : []);
-  _disabled = signal(false, ...ngDevMode ? [{
-    debugName: "_disabled"
-  }] : []);
-  $disabled = computed(() => this.disabled() || this._disabled(), ...ngDevMode ? [{
-    debugName: "$disabled"
-  }] : []);
-  onModelChange = () => {
-  };
-  onModelTouched = () => {
-  };
-  writeDisabledState(value) {
-    this._disabled.set(value);
-  }
-  writeControlValue(value, setModelValue) {
-  }
-  /**** Angular ControlValueAccessors ****/
-  writeValue(value) {
-    this.writeControlValue(value, this.writeModelValue.bind(this));
-  }
-  registerOnChange(fn) {
-    this.onModelChange = fn;
-  }
-  registerOnTouched(fn) {
-    this.onModelTouched = fn;
-  }
-  setDisabledState(val) {
-    this.writeDisabledState(val);
-    this.cd.markForCheck();
-  }
-  static ɵfac = /* @__PURE__ */ (() => {
-    let ɵBaseEditableHolder_BaseFactory;
-    return function BaseEditableHolder_Factory(__ngFactoryType__) {
-      return (ɵBaseEditableHolder_BaseFactory || (ɵBaseEditableHolder_BaseFactory = ɵɵgetInheritedFactory(_BaseEditableHolder)))(__ngFactoryType__ || _BaseEditableHolder);
-    };
-  })();
-  static ɵdir = ɵɵdefineDirective({
-    type: _BaseEditableHolder,
-    inputs: {
-      required: [1, "required"],
-      invalid: [1, "invalid"],
-      disabled: [1, "disabled"],
-      name: [1, "name"]
-    },
-    features: [ɵɵInheritDefinitionFeature]
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(BaseEditableHolder, [{
-    type: Directive,
-    args: [{
-      standalone: true
-    }]
-  }], null, {
-    required: [{
-      type: Input,
-      args: [{
-        isSignal: true,
-        alias: "required",
-        required: false
-      }]
-    }],
-    invalid: [{
-      type: Input,
-      args: [{
-        isSignal: true,
-        alias: "invalid",
-        required: false
-      }]
-    }],
-    disabled: [{
-      type: Input,
-      args: [{
-        isSignal: true,
-        alias: "disabled",
-        required: false
-      }]
-    }],
-    name: [{
-      type: Input,
-      args: [{
-        isSignal: true,
-        alias: "name",
-        required: false
-      }]
-    }]
-  });
-})();
+import "./chunk-GOMI4DH3.js";
 
 // node_modules/@primeuix/styles/dist/toggleswitch/index.mjs
 var style = "\n    .p-toggleswitch {\n        display: inline-block;\n        width: dt('toggleswitch.width');\n        height: dt('toggleswitch.height');\n    }\n\n    .p-toggleswitch-input {\n        cursor: pointer;\n        appearance: none;\n        position: absolute;\n        top: 0;\n        inset-inline-start: 0;\n        width: 100%;\n        height: 100%;\n        padding: 0;\n        margin: 0;\n        opacity: 0;\n        z-index: 1;\n        outline: 0 none;\n        border-radius: dt('toggleswitch.border.radius');\n    }\n\n    .p-toggleswitch-slider {\n        cursor: pointer;\n        width: 100%;\n        height: 100%;\n        border-width: dt('toggleswitch.border.width');\n        border-style: solid;\n        border-color: dt('toggleswitch.border.color');\n        background: dt('toggleswitch.background');\n        transition:\n            background dt('toggleswitch.transition.duration'),\n            color dt('toggleswitch.transition.duration'),\n            border-color dt('toggleswitch.transition.duration'),\n            outline-color dt('toggleswitch.transition.duration'),\n            box-shadow dt('toggleswitch.transition.duration');\n        border-radius: dt('toggleswitch.border.radius');\n        outline-color: transparent;\n        box-shadow: dt('toggleswitch.shadow');\n    }\n\n    .p-toggleswitch-handle {\n        position: absolute;\n        top: 50%;\n        display: flex;\n        justify-content: center;\n        align-items: center;\n        background: dt('toggleswitch.handle.background');\n        color: dt('toggleswitch.handle.color');\n        width: dt('toggleswitch.handle.size');\n        height: dt('toggleswitch.handle.size');\n        inset-inline-start: dt('toggleswitch.gap');\n        margin-block-start: calc(-1 * calc(dt('toggleswitch.handle.size') / 2));\n        border-radius: dt('toggleswitch.handle.border.radius');\n        transition:\n            background dt('toggleswitch.transition.duration'),\n            color dt('toggleswitch.transition.duration'),\n            inset-inline-start dt('toggleswitch.slide.duration'),\n            box-shadow dt('toggleswitch.slide.duration');\n    }\n\n    .p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-slider {\n        background: dt('toggleswitch.checked.background');\n        border-color: dt('toggleswitch.checked.border.color');\n    }\n\n    .p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-handle {\n        background: dt('toggleswitch.handle.checked.background');\n        color: dt('toggleswitch.handle.checked.color');\n        inset-inline-start: calc(dt('toggleswitch.width') - calc(dt('toggleswitch.handle.size') + dt('toggleswitch.gap')));\n    }\n\n    .p-toggleswitch:not(.p-disabled):has(.p-toggleswitch-input:hover) .p-toggleswitch-slider {\n        background: dt('toggleswitch.hover.background');\n        border-color: dt('toggleswitch.hover.border.color');\n    }\n\n    .p-toggleswitch:not(.p-disabled):has(.p-toggleswitch-input:hover) .p-toggleswitch-handle {\n        background: dt('toggleswitch.handle.hover.background');\n        color: dt('toggleswitch.handle.hover.color');\n    }\n\n    .p-toggleswitch:not(.p-disabled):has(.p-toggleswitch-input:hover).p-toggleswitch-checked .p-toggleswitch-slider {\n        background: dt('toggleswitch.checked.hover.background');\n        border-color: dt('toggleswitch.checked.hover.border.color');\n    }\n\n    .p-toggleswitch:not(.p-disabled):has(.p-toggleswitch-input:hover).p-toggleswitch-checked .p-toggleswitch-handle {\n        background: dt('toggleswitch.handle.checked.hover.background');\n        color: dt('toggleswitch.handle.checked.hover.color');\n    }\n\n    .p-toggleswitch:not(.p-disabled):has(.p-toggleswitch-input:focus-visible) .p-toggleswitch-slider {\n        box-shadow: dt('toggleswitch.focus.ring.shadow');\n        outline: dt('toggleswitch.focus.ring.width') dt('toggleswitch.focus.ring.style') dt('toggleswitch.focus.ring.color');\n        outline-offset: dt('toggleswitch.focus.ring.offset');\n    }\n\n    .p-toggleswitch.p-invalid > .p-toggleswitch-slider {\n        border-color: dt('toggleswitch.invalid.border.color');\n    }\n\n    .p-toggleswitch.p-disabled {\n        opacity: 1;\n    }\n\n    .p-toggleswitch.p-disabled .p-toggleswitch-slider {\n        background: dt('toggleswitch.disabled.background');\n    }\n\n    .p-toggleswitch.p-disabled .p-toggleswitch-handle {\n        background: dt('toggleswitch.handle.disabled.background');\n    }\n";
