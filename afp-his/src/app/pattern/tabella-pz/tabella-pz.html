@@ -1,19 +1,33 @@
-<div class="flex flex-column align-items-center">
-<p-button (onClick)="PazienteManager.fetchPazienti()" [rounded]="true" [outlined]="true" [text]="true"
-    icon="pi pi-refresh" severity="secondary" />
+<p-table [value]="PazienteManager.ListaPz()">
+    <ng-template #header>
+        <tr>
+            <th>Codice Colore</th>
+            <th>Anagrafica</th>
+            <th>Braccialetto</th>
+            <th>Patologia</th>
+            <th>Note</th>
+            <th>Azioni</th>
+        </tr>
+    </ng-template>
 
-<p-toggle-switch [(ngModel)]="enableReFresh"/>
-</div>
+    <ng-template #body let-pz>
+        <tr>
+            <td> {{ pz.codiceColore}} </td>
+            <td> {{ pz.nome}} {{ pz.cognome }} </td>
+            <td> {{ pz.braccialetto}} </td>
+            <td> {{ pz.patologia}} </td>
+            <td> {{ pz.note}} </td>
+            <td>
+                <p-button label="Modifica" (onClick)="navigateToSchedaPaziente(pz.id)" />
+                <p-button label="Dimetti"  (onClick)="PazienteManager.dimettiPaziente(pz.id)" />
+            </td>
+        </tr>
+    </ng-template>
 
-<p>Abilita refresh automatico: {{ enableReFresh() }}</p>
-<input type="text" pInputText [(ngModel)]="nomePaziente">
+    <ng-template #emptymessage>
+        <tr>
+            <td colspan="6">Nessun paziente trovato.</td>
+        </tr>
+    </ng-template>
 
-<p>Pazienti presenti in ps: {{ PazienteManager.ListaPz().length }}</p>
-
-<div class="flex flex-wrap flex-row gap-4 padding-4">
-    @for(pz of PazienteManager.ListaPz(); track pz.braccialetto){
-        <his-card-pz [paziente]="pz" />
-    } @empty {
-        <h1>Nessun paziente trovato</h1>
-    }
-<div>
+</p-table>

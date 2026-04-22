@@ -20,9 +20,9 @@ export class PazienteManager {
   /** 
   * Creazione timer di t secondi
   */
-  public refreshPazienti() { 
-    if (this.timer_id() >= 0) return; 
-    let timer_id = setInterval(() => this.fetchPazienti(), 1000); 
+  public refreshPazienti() {
+    if (this.timer_id() >= 0) return;
+    let timer_id = setInterval(() => this.fetchPazienti(), 1000);
     this.timer_id.set(timer_id);
   }
 
@@ -48,11 +48,11 @@ export class PazienteManager {
       .subscribe({
         next: (res) => {
           this.#router.navigate([`/modifica-pz/${res.data.id}`]);
-      },
+        },
         error: (err) => {
           console.error("Errore durante l'ammissione del pazinete:", err);
-      },
-    })
+        },
+      })
   }
 
   public updatePatientInfo(pzId: number, residenza: Pick<PatientAdmission, 'residenza'>) {
@@ -64,7 +64,7 @@ export class PazienteManager {
         error: (err) => {
           console.error("Errore durante l'aggiornamento deelle informazioni del paziete:", err);
         }
-    })
+      })
     
   }
 
@@ -99,4 +99,18 @@ export class PazienteManager {
     );
     this.#listaPzFiltered.set(filtered);
   }
+
+  public dimettiPaziente(pzId: number) {
+    this.#http.patch(`${environment.apiUrl}/admissions/${pzId}/status`, { nuovoStato: 'DIM' })
+      .subscribe({
+        next: () => {
+          this.fetchPazienti();
+        },
+        error: (err) => {
+          console.error("Errore durante la dimissione del pazinete:", err);
+        }
+      });
+  }
+
 }
+  
