@@ -1,0 +1,15 @@
+<p-button
+  (onClick)="staffManager.fetchStaff()"
+  [rounded]="true"
+  [text]="true"
+  icon="pi pi-refresh"
+  severity="secondary"
+/>
+
+<div class="flex flex-wrap flex-row gap-4 p-4">
+  @for (member of staffManager.staff(); track member.id) {
+    <his-card-staff [staff]="member" />
+  } @empty {
+    <h1>Nessun membro dello staff</h1>
+  }
+</div>

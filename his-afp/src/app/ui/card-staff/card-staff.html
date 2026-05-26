@@ -1,0 +1,11 @@
+<div class="mb-4 p-4">
+  <p-card
+    header="{{staff().username}}"
+  >
+    <ng-template #subtitle>
+      <span class="{{ staff().isActive ? 'text-green-400' : 'text-red-400' }}">
+        {{ staff().isActive ? 'Sta lavorando' : 'Non sta lavorando' }}
+      </span>
+    </ng-template>
+  </p-card>
+</div>
