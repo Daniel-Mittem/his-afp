@@ -4,3 +4,7 @@ export interface Staff {
   role: string;
   isActive: boolean;
 }
+
+export interface Data {
+  available: boolean;
+}

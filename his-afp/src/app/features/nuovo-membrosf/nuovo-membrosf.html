@@ -1,0 +1,97 @@
+<form (submit)="onSubmit()" [formGroup]="staff">
+  <div class="flex flex-row flex-wrap gap-8">
+    <p-fieldset legend="Dati account">
+      <div class="flex flex-col p-4">
+        <label for="username">Username:</label>
+        <input
+          [invalid]="checkFormControl('username')"
+          class="w-2xs"
+          formControlName="username"
+          id="username"
+          pInputText
+          type="text"
+        />
+        @if (checkFormControl('username')) {
+          @if (checkFormControlError('username', 'required')) {
+            <p-message severity="error" variant="simple">
+              Il campo 'username' è obbligatorio.
+            </p-message>
+          }
+          @if (checkFormControlError('username', 'minlength')) {
+            <p-message severity="error" variant="simple">
+              Il campo 'username' deve contenere almeno
+              {{ checkFormControlError('username', 'minlength').requiredLength }} caratteri.
+            </p-message>
+          }
+          @if (checkFormControlError('username', 'maxlength')) {
+            <p-message severity="error" variant="simple">
+              Il campo 'username' non può superare i
+              {{ checkFormControlError('username', 'maxlength').requiredLength }} caratteri.
+            </p-message>
+          }
+        }
+      </div>
+      <div class="flex flex-col p-4">
+        <label for="password">Password:</label>
+        <input
+          [invalid]="checkFormControl('password')"
+          class="w-2xs"
+          formControlName="password"
+          id="password"
+          pInputText
+          type="password"
+        />
+        @if (checkFormControl('password')) {
+          @if (checkFormControlError('password', 'required')) {
+            <p-message severity="error" variant="simple">
+              Il campo 'password' è obbligatorio.
+            </p-message>
+          }
+          @if (checkFormControlError('password', 'minlength')) {
+            <p-message severity="error" variant="simple">
+              Il campo 'password' deve contenere almeno
+              {{ checkFormControlError('password', 'minlength').requiredLength }} caratteri.
+            </p-message>
+          }
+          @if (checkFormControlError('password', 'maxlength')) {
+            <p-message severity="error" variant="simple">
+              Il campo 'password' non può superare i
+              {{ checkFormControlError('password', 'maxlength').requiredLength }} caratteri.
+            </p-message>
+          }
+        }
+      </div>
+      <div class="flex flex-col p-4">
+        <label for="role">Ruolo:</label>
+        <p-select
+          [invalid]="checkFormControl('role')"
+          [options]="roleOptions"
+          class="w-2xs"
+          formControlName="role"
+          id="role"
+          optionLabel="desc"
+          optionValue="code"
+        />
+        @if (checkFormControl('role')) {
+          @if (checkFormControlError('role', 'required')) {
+            <p-message severity="error" variant="simple">
+              Il campo 'ruolo' è obbligatorio.
+            </p-message>
+          }
+        }
+      </div>
+    </p-fieldset>
+  </div>
+  <div class="flex flex-row gap-4 pt-3">
+    <p-button
+      label="Invia"
+      type="submit"
+    />
+    <p-button
+      (onClick)="staff.reset()"
+      label="Reset"
+      severity="warn"
+      variant="outlined"
+    />
+  </div>
+</form>

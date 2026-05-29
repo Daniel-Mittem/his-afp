@@ -4,8 +4,14 @@
   >
     <ng-template #subtitle>
       <span class="{{ staff().isActive ? 'text-green-400' : 'text-red-400' }}">
-        {{ staff().isActive ? 'Sta lavorando' : 'Non sta lavorando' }}
+        {{ staff().isActive ? 'In servizio' : 'Fuori servizio' }}
       </span>
     </ng-template>
+    <p-button
+        (onClick)="toggleStaffStatus()"
+        [label]="staff().isActive ? 'Metti fuori servizio' : 'Metti in servizio'"
+        [severity]="staff().isActive ? 'danger' : 'success'"
+    >
+    </p-button>
   </p-card>
 </div>
