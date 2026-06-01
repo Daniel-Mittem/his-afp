@@ -29,6 +29,11 @@
               {{ checkFormControlError('username', 'maxlength').requiredLength }} caratteri.
             </p-message>
           }
+          @if (checkFormControlError('username', 'usernameTaken')) {
+            <p-message severity="error" variant="simple">
+              Lo username è già in uso. Scegli un altro username.
+            </p-message>
+          }
         }
       </div>
       <div class="flex flex-col p-4">

@@ -3,11 +3,13 @@ import { Button } from 'primeng/button';
 import { Fieldset } from 'primeng/fieldset';
 import { InputText } from 'primeng/inputtext';
 import { Message } from 'primeng/message';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Select } from 'primeng/select';
 import { GestioneRisorse } from '../../core/Risorse/gestione-risorse';
 import { StaffManager } from '../../core/Staff/staff-manager';
 import { Staff } from '../../core/Staff/staff.model';
+import { Observable, of } from 'rxjs';
+import { map, catchError, debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'his-nuovo-membrosf',
@@ -44,10 +46,25 @@ export class NuovoMembrosf {
 
   readonly #fb = inject(FormBuilder);
   staff = this.#fb.group({
-    username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+    username: ['', 
+      [Validators.required, Validators.minLength(3), Validators.maxLength(50)],
+      [this.usernameUniqueValidator.bind(this)]
+    ],
     password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
     role: ['', [Validators.required]],
   });
+
+  usernameUniqueValidator(control: AbstractControl): Observable<ValidationErrors | null> {
+    if (!control.value) {
+      return of(null);
+    }
+    
+    return this.staffManager.checkUsernameAvailability(control.value).pipe(
+      debounceTime(300),
+      map(response => response.data.available ? null : { usernameTaken: true }),
+      catchError(() => of(null))
+    );
+  }
 
   checkFormControl(control: string) {
     const fc = this.staff.get(control);

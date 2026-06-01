@@ -65,4 +65,8 @@ export class StaffManager {
       },
     });
   }
+
+  public checkUsernameAvailability(username: string) {
+    return this.#http.get<APIResponse<{available: boolean}>>(`${environment.apiUrl}/users/check/${username}`);
+  }
 }
