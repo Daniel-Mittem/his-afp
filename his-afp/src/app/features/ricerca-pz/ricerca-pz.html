@@ -1,0 +1,45 @@
+<form (submit)="onSubmit()" [formGroup]="paziente">
+  <div class="flex flex-col justify-center items-center gap-10 min-h-150">
+    <h1 class="text-2xl font-bold text-center">
+      Inserisci il Codice Fiscale del paziente:
+    </h1>
+
+    @if (searchError()) {
+      <p-message severity="error" variant="simple">
+        {{ searchError() }}
+      </p-message>
+    }
+
+    <div formGroupName="anagrafica">
+      <p-floatlabel>
+        <p-iconfield>
+          <p-inputicon class="pi pi-search" (click)="onSubmit()" />
+
+          <input
+            pInputText
+            id="over_label"
+            formControlName="codiceFiscale"
+            autocomplete="off"
+            class="w-30rem text-xl"
+            [invalid]="checkFormControl('anagrafica.codiceFiscale')"
+          />
+
+          @if (checkFormControl('anagrafica.codiceFiscale')) {
+            @if (checkFormControlError('anagrafica.codiceFiscale', 'required')) {
+              <p-message severity="error" variant="simple">
+                Il campo 'Codice Fiscale' è obbligatorio.
+              </p-message>
+            }
+            @if (checkFormControlError('anagrafica.codiceFiscale', 'pattern')) {
+              <p-message severity="error" variant="simple">
+                Il campo 'Codice Fiscale' non rispetta la struttura corretta.
+              </p-message>
+            }
+          }
+        </p-iconfield>
+
+        <label for="over_label">Codice Fiscale</label>
+      </p-floatlabel>
+    </div>
+  </div>
+</form>

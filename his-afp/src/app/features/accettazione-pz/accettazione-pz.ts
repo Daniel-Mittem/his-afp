@@ -69,6 +69,7 @@ export class AccettazionePz {
     // nome.invalid && (nome.touched || nome.dirty)
     return fc?.invalid && (fc.touched || fc.dirty);
   }
+
   checkFormControlError(control: string, err: string) {
     const fc = this.paziente.get(control);
 
@@ -78,6 +79,7 @@ export class AccettazionePz {
       return null;
     }
   }
+
   onSubmit() {
     if (this.paziente.valid) {
       console.log(this.paziente.value);
