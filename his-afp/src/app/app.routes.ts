@@ -6,10 +6,6 @@ export const routes: Routes = [
     loadComponent: () => import('./features/lista-pz/lista-pz').then((m) => m.ListaPz),
   },
   {
-    path: 'ricerca-pz',
-    loadComponent: () => import('./features/ricerca-pz/ricerca-pz').then((m) => m.RicercaPz),
-  },
-  {
     path: 'accettazione-pz',
     loadComponent: () =>
       import('./features/accettazione-pz/accettazione-pz').then((m) => m.AccettazionePz),

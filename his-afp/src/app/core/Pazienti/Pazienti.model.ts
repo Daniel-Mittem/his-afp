@@ -60,3 +60,27 @@ export interface PatientAdmissionRes {
   id: number;
   braccialetto: string;
 }
+
+export interface PazienteDTORaw {
+  id: number;
+  nome: string;
+  cognome: string;
+  sex: string;
+  codice_fiscale: string;
+  data_nascita: string;
+  indirizzo_via: string;
+  indirizzo_civico: string;
+  comune: string;
+  provincia: string;
+  braccialetto: string;
+  data_ora_ingresso: string;
+  stato: string;
+  note_triage: string;
+  patologia_code: string;
+  patologia_descrizione: string;
+  colore_code: string;
+  colore_hex: string;
+  colore_nome: string;
+  modalita_arrivo_code: string;
+  modalita_arrivo_descrizione: string;
+}
