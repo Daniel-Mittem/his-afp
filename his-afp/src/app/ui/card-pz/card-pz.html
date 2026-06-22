@@ -11,10 +11,18 @@
     </p>
 
     <ng-template #footer>
-      <p-button
-        (onClick)="navigateToSchedaPaziente()"
-        label="Modifica"
-      />
+      <div class="flex gap-2">
+        <p-button
+          (onClick)="navigateToSchedaPaziente()"
+          label="Modifica"
+        />
+        <p-button
+          (onClick)="dimetti()"
+          label="Dimetti"
+          severity="warn"
+          variant="outlined"
+        />
+      </div>
     </ng-template>
   </p-card>
 </div>

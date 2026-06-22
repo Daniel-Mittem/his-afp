@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { PatientAdmission, PatientAdmissionRes, Paziente, PazienteDTO } from './Pazienti.model';
+import { PatientAdmission, PatientAdmissionRes, Paziente, PazienteDTO, DischargedAdmission } from './Pazienti.model';
 import { HttpClient } from '@angular/common/http';
 import { APIResponse } from '../models/APIResponse.model';
 import { environment } from '../../../environments/environment';
@@ -104,5 +104,22 @@ export class PatientManager {
       return fullName.includes(name.toLowerCase());
     });
     this.#listaPZFiltered.set(filtered);
+  }
+
+  public fetchDischargedPatients() {
+    return this.#http.get<APIResponse<DischargedAdmission[]>>(`${environment.apiUrl}/admissions/reports/discharged`);
+  }
+
+  public dischargePatient(admissionId: number) {
+    return this.#http.patch<APIResponse<any>>(`${environment.apiUrl}/admissions/${admissionId}/status`, {
+      nuovoStato: 'DIM'
+    });
+  }
+
+  public dimettePaziente(id: string) {
+    return this.#http.patch<APIResponse<{ id: number; stato: string }>>(
+      `${environment.apiUrl}/admissions/${id}/status`,
+      { nuovoStato: 'DIM' }
+    );
   }
 }

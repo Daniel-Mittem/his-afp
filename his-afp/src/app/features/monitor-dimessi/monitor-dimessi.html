@@ -1,0 +1,66 @@
+<div class="p-6">
+  <h1 class="text-3xl font-bold mb-4">Monitor Dimessi (Ultime 24h)</h1>
+
+  <div class="mb-4 flex gap-2">
+    <p-button
+      (onClick)="loadDischargedPatients()"
+      [rounded]="true"
+      [text]="true"
+      icon="pi pi-refresh"
+      severity="secondary"
+      pTooltip="Ricarica dati"
+    />
+  </div>
+
+  @if (errorMessage()) {
+    <div class="p-4 mb-4 bg-red-100 border border-red-400 text-red-700 rounded">
+      {{ errorMessage() }}
+    </div>
+  }
+
+  <p-table
+    [value]="dischargedPatients()"
+    [loading]="loading()"
+    [paginator]="true"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Visualizzazione {first} di {last} su {totalRecords} pazienti"
+    [sortField]="'dataOraDimissione'"
+    [sortOrder]="-1"
+  >
+    <ng-template pTemplate="caption">
+      <div class="flex items-center justify-between">
+        <span class="text-gray-700">Pazienti dimessi nelle ultime 24 ore</span>
+        <span class="text-gray-600 text-sm">Totale: {{ dischargedPatients().length }}</span>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="braccialetto">Braccialetto <p-sortIcon field="braccialetto" /></th>
+        <th pSortableColumn="nome">Nome <p-sortIcon field="nome" /></th>
+        <th pSortableColumn="cognome">Cognome <p-sortIcon field="cognome" /></th>
+        <th pSortableColumn="dataOraIngresso">Ora Ingresso <p-sortIcon field="dataOraIngresso" /></th>
+        <th pSortableColumn="dataOraDimissione">Ora Dimissione <p-sortIcon field="dataOraDimissione" /></th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-data>
+      <tr>
+        <td><span class="font-semibold">{{ data.braccialetto }}</span></td>
+        <td>{{ data.nome }}</td>
+        <td>{{ data.cognome }}</td>
+        <td>{{ formatDateTime(data.dataOraIngresso) }}</td>
+        <td><span class="font-semibold text-green-600">{{ formatDateTime(data.dataOraDimissione) }}</span></td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="5" class="text-center py-6 text-gray-600">
+          Nessun paziente dimesso nelle ultime 24 ore
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

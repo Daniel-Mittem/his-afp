@@ -25,6 +25,11 @@ export const routes: Routes = [
       import('./features/stato-servizi/stato-servizi').then((m) => m.StatoServizi),
   },
   {
+    path: 'monitor-dimessi',
+    loadComponent: () =>
+      import('./features/monitor-dimessi/monitor-dimessi').then((m) => m.MonitorDimessi),
+  },
+  {
     path: '',
     redirectTo: 'lista-pz',
     pathMatch: 'full',

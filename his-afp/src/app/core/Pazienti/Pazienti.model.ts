@@ -60,3 +60,11 @@ export interface PatientAdmissionRes {
   id: number;
   braccialetto: string;
 }
+
+export interface DischargedAdmission {
+  braccialetto: string;
+  nome: string;
+  cognome: string;
+  dataOraIngresso: string;
+  dataOraDimissione: string;
+}
