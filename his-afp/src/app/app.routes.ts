@@ -34,6 +34,11 @@ export const routes: Routes = [
       import('./features/nuovo-membrosf/nuovo-membrosf').then((m) => m.NuovoMembrosf),
   },
   {
+    path: 'monitor-dimessi',
+    loadComponent: () =>
+      import('./features/monitor-dimessi/monitor-dimessi').then((m) => m.MonitorDimessi),
+  },
+  {
     path: '',
     redirectTo: 'lista-pz',
     pathMatch: 'full',

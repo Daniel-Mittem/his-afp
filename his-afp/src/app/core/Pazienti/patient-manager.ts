@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { PatientAdmission, PatientAdmissionRes, Paziente, PazienteDTO } from './Pazienti.model';
+import { PatientAdmission, PatientAdmissionRes, Paziente, PazienteDTO, DischargedAdmission } from './Pazienti.model';
 import { HttpClient } from '@angular/common/http';
 import { APIResponse } from '../models/APIResponse.model';
 import { environment } from '../../../environments/environment';
@@ -15,7 +15,7 @@ export class PatientManager {
   #listaPZ = signal<Paziente[]>([]);
   #listaPZFiltered = signal<Paziente[]>(this.#listaPZ());
   listaPZ = this.#listaPZFiltered.asReadonly();
-  
+
   #selectedPatient = signal<PazienteDTO | null>(null);
   selectedPatient = this.#selectedPatient.asReadonly();
 
@@ -134,5 +134,16 @@ export class PatientManager {
 
   public clearSelectedPatient() {
     this.#selectedPatient.set(null);
+  }
+
+  public fetchDischargedPatients() {
+    return this.#http.get<APIResponse<DischargedAdmission[]>>(`${environment.apiUrl}/admissions/reports/discharged`);
+  }
+
+  public dimettePaziente(id: string) {
+    return this.#http.patch<APIResponse<{ id: number; stato: string }>>(
+      `${environment.apiUrl}/admissions/${id}/status`,
+      { nuovoStato: 'DIM' }
+    );
   }
 }

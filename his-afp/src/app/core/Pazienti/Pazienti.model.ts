@@ -84,3 +84,11 @@ export interface PazienteDTORaw {
   modalita_arrivo_code: string;
   modalita_arrivo_descrizione: string;
 }
+
+export interface DischargedAdmission {
+  braccialetto: string;
+  nome: string;
+  cognome: string;
+  dataOraIngresso: string;
+  dataOraDimissione: string;
+}

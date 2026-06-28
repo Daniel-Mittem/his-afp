@@ -1,0 +1,24 @@
+:host {
+  ::ng-deep {
+    .p-datatable {
+      .p-datatable-thead > tr > th {
+        background-color: #f3f4f6;
+        font-weight: 600;
+        border-color: #e5e7eb;
+      }
+
+      .p-datatable-tbody > tr {
+        border-color: #e5e7eb;
+
+        &:hover {
+          background-color: #f9fafb;
+        }
+      }
+
+      .p-paginator {
+        background-color: #f9fafb;
+        border-color: #e5e7eb;
+      }
+    }
+  }
+}
