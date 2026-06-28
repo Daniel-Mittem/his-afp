@@ -1,0 +1,140 @@
+<div class="flex flex-col gap-4 mb-6">
+  <!-- Selezione modalità -->
+  <p-selectButton
+    [options]="modalitaOptions"
+    [ngModel]="modalita()"
+    (ngModelChange)="onModalitaChange($event)"
+    optionLabel="label"
+    optionValue="value"
+  />
+
+  <!-- Form Codice Fiscale -->
+  @if (modalita() === 'cf') {
+    <form (submit)="cerca()" [formGroup]="formCF" class="flex flex-row items-end gap-3">
+      <div class="flex flex-col gap-1">
+        <label for="cf">Codice Fiscale</label>
+        <input
+          id="cf"
+          formControlName="codiceFiscale"
+          pInputText
+          type="text"
+          class="w-xs uppercase"
+          placeholder="RSSMRA80A01H501U"
+          [invalid]="isCFInvalid()"
+        />
+        @if (isCFInvalid()) {
+          @if (getErrorCF('required')) {
+            <p-message severity="error" variant="simple">Campo obbligatorio.</p-message>
+          }
+          @if (getErrorCF('pattern')) {
+            <p-message severity="error" variant="simple">Formato codice fiscale non valido.</p-message>
+          }
+        }
+      </div>
+      <p-button type="submit" label="Cerca" icon="pi pi-search" [loading]="loading()" />
+    </form>
+  }
+
+  <!-- Form Nome / Cognome / Data di nascita -->
+  @if (modalita() === 'anagrafica') {
+    <form (submit)="cerca()" [formGroup]="formAnagrafica" class="flex flex-row flex-wrap items-end gap-3">
+      <div class="flex flex-col gap-1">
+        <label for="srNome">Nome</label>
+        <input
+          id="srNome"
+          formControlName="nome"
+          pInputText
+          type="text"
+          class="w-2xs"
+          [invalid]="isAnagraficaInvalid('nome')"
+        />
+        @if (isAnagraficaInvalid('nome') && getErrorAnagrafica('nome', 'required')) {
+          <p-message severity="error" variant="simple">Campo obbligatorio.</p-message>
+        }
+      </div>
+      <div class="flex flex-col gap-1">
+        <label for="srCognome">Cognome</label>
+        <input
+          id="srCognome"
+          formControlName="cognome"
+          pInputText
+          type="text"
+          class="w-2xs"
+          [invalid]="isAnagraficaInvalid('cognome')"
+        />
+        @if (isAnagraficaInvalid('cognome') && getErrorAnagrafica('cognome', 'required')) {
+          <p-message severity="error" variant="simple">Campo obbligatorio.</p-message>
+        }
+      </div>
+      <div class="flex flex-col gap-1">
+        <label for="srDataNascita">Data di nascita</label>
+        <p-datePicker
+          id="srDataNascita"
+          formControlName="dataNascita"
+          dateFormat="dd/mm/yy"
+          placeholder="dd/mm/yyyy"
+          [maxDate]="maxDate"
+          [invalid]="isAnagraficaInvalid('dataNascita')"
+          class="w-2xs"
+        />
+        @if (isAnagraficaInvalid('dataNascita') && getErrorAnagrafica('dataNascita', 'required')) {
+          <p-message severity="error" variant="simple">Campo obbligatorio.</p-message>
+        }
+      </div>
+      <p-button type="submit" label="Cerca" icon="pi pi-search" [loading]="loading()" />
+    </form>
+  }
+
+  <!-- Errore -->
+  @if (errore()) {
+    <p-message severity="error">{{ errore() }}</p-message>
+  }
+
+  <!-- Risultati -->
+  @if (haRisultati()) {
+    <div class="flex flex-col gap-2">
+      <p class="font-semibold">
+        {{ risultati().length === 1 ? '1 paziente trovato' : risultati().length + ' pazienti trovati' }}
+        — seleziona per pre-compilare il form:
+      </p>
+      @for (pz of risultati(); track pz.codiceFiscale) {
+        <div
+          class="flex flex-row items-center justify-between border rounded-lg p-3 hover:bg-surface-100 cursor-pointer transition-colors"
+          (click)="seleziona(pz)"
+          (keydown.enter)="seleziona(pz)"
+          (keydown.space)="seleziona(pz)"
+          role="button"
+          tabindex="0"
+          [attr.aria-label]="'Seleziona ' + pz.nome + ' ' + pz.cognome"
+        >
+          <div>
+            <p class="font-semibold">{{ pz.cognome }} {{ pz.nome }}</p>
+            <p class="text-sm text-surface-500">CF: {{ pz.codiceFiscale }} &nbsp;|&nbsp; Nato/a il: {{ pz.dataNascita | slice: 0:10 }}</p>
+          </div>
+          <p-button label="Seleziona" size="small" variant="outlined" />
+        </div>
+      }
+      <p-button
+        label="Nessuno di questi — inserisci nuovo paziente"
+        severity="secondary"
+        variant="text"
+        icon="pi pi-plus"
+        (onClick)="procediNuovo()"
+      />
+    </div>
+  }
+
+  <!-- Nessun risultato -->
+  @if (nessunoTrovato()) {
+    <div class="flex flex-col gap-2">
+      <p-message severity="info">
+        Nessun paziente trovato con i dati inseriti.
+      </p-message>
+      <p-button
+        label="Inserisci nuovo paziente"
+        icon="pi pi-plus"
+        (onClick)="procediNuovo()"
+      />
+    </div>
+  }
+</div>

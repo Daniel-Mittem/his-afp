@@ -15,6 +15,9 @@ export class PatientManager {
   #listaPZ = signal<Paziente[]>([]);
   #listaPZFiltered = signal<Paziente[]>(this.#listaPZ());
   listaPZ = this.#listaPZFiltered.asReadonly();
+  
+  #selectedPatient = signal<PazienteDTO | null>(null);
+  selectedPatient = this.#selectedPatient.asReadonly();
 
   // constructor() {
   //   this.fetchPazienti();
@@ -104,5 +107,32 @@ export class PatientManager {
       return fullName.includes(name.toLowerCase());
     });
     this.#listaPZFiltered.set(filtered);
+  }
+
+  public searchPatientByCodiceFiscale(codiceFiscale: string): Promise<PazienteDTO | null> {
+    return new Promise((resolve, reject) => {
+      this.#http.get<APIResponse<PazienteDTO[]>>(`${environment.apiUrl}/admissions`).subscribe({
+        next: (res) => {
+          const foundPatient = res.data?.find(
+            (p) => p.codiceFiscale.toUpperCase() === codiceFiscale.toUpperCase()
+          );
+          if (foundPatient) {
+            this.#selectedPatient.set(foundPatient);
+            resolve(foundPatient);
+          } else {
+            this.#selectedPatient.set(null);
+            resolve(null);
+          }
+        },
+        error: (err) => {
+          console.error('Errore durante la ricerca del paziente:', err);
+          reject(err);
+        },
+      });
+    });
+  }
+
+  public clearSelectedPatient() {
+    this.#selectedPatient.set(null);
   }
 }
