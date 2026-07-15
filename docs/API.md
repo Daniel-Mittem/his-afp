@@ -550,7 +550,7 @@ Viene impostato il campo `isActive` a `false` senza eliminare fisicamente il rec
 Riattivazione di un utente disattivato.
 Viene impostato il campo `isActive` a `true`.
 
-* **Endpoint:** `PATCH /users/:id/deactivate`
+* **Endpoint:** `PATCH /users/:id/activate`
     * **Parametro:** `id` (ID dell'utente da attivare)
 
 * **Risposta (200):**
@@ -572,6 +572,35 @@ Viene impostato il campo `isActive` a `true`.
   "message": "Operatore non trovato"
 }
 ```
+
+### 5.5 Cambio ruolo utente
+
+Cambia il ruolo di un operatore sanitario.
+
+* **Endpoint:** `PATCH /users/:id/editrole`
+* **Parametro:** `id` (ID dell'utente da modificare)
+* **Body:**
+
+```json
+{
+  "role": "INF"
+}
+```
+
+* **Risposta (200):**
+
+```json
+{
+  "status": "success",
+  "data": {
+    "id": 4,
+    "username": "mario.rossi",
+    "role": "INF"
+  }
+}
+```
+
+> Se il ruolo è uguale a quello attuale, la risposta sarà comunque `200 OK` senza modifiche.
 
 ---
 
