@@ -14,9 +14,10 @@ services:
       - pg_data:/var/lib/postgresql/data
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
 
-  backend:
+  # BACKEND BLUE
+  backend-blue:
     build: ./backend
-    container_name: sio-backend
+    container_name: sio-backend-blue
     #    ports:
     #      - "3000:3000"
     environment:
@@ -26,6 +27,27 @@ services:
       DB_NAME: sio_db
       JWT_SECRET: "chiave_segreta_super_sicura_per_il_corso_segretissimissima"
       AUTH_ENABLED: "false"
+      APP_VERSION: "${BACKEND_BLUE_VERSION:-blue}"
+    networks:
+      - backend-net
+    depends_on:
+      - db
+    restart: always
+
+  # BACKEND GREEN
+  backend-green:
+    build: ./backend
+    container_name: sio-backend-green
+    #    ports:
+    #      - "3001:3000"
+    environment:
+      DB_HOST: db
+      DB_USER: sio_user
+      DB_PASS: sio_password
+      DB_NAME: sio_db
+      JWT_SECRET: "chiave_segreta_super_sicura_per_il_corso_segretissimissima"
+      AUTH_ENABLED: "false"
+      APP_VERSION: "${BACKEND_GREEN_VERSION:-green}"
     networks:
       - backend-net
     depends_on:
@@ -85,6 +107,8 @@ services:
       - fe-sio
       - fe-prod
       - fe-test
+      - backend-blue
+      - backend-green
     restart: always
 
 networks:
