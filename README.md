@@ -24,9 +24,9 @@ Il progetto è suddiviso in due aree di competenza tecnica:
 
 * **Frontend (UF15):** Sviluppo di una Single Page Application (SPA) con **Angular** per l'interfaccia utente.
 * **Containerizzazione (UF14):**
-    * Creazione di Dockerfile, configurazione di Docker Compose e NGINX per il deploy dell'applicazione.
-    * Impostazione del monitoraggio e logging dei container.
-    * Test e documentazione del sistema.
+  * Creazione di Dockerfile, configurazione di Docker Compose e NGINX per il deploy dell'applicazione.
+  * Impostazione del monitoraggio e logging dei container.
+  * Test e documentazione del sistema.
 
 # Struttura del Progetto
 
@@ -108,9 +108,18 @@ docker-compose up -d --build --no-deps backend
 Per testare le API sono disponibili le collection Postman nella cartella `postman/collection`.
 
 > Le collection sono suddivise in base ai capitoli della documentazione relativa alle API, presente nel file
-`docs/API.md`.
+> `docs/API.md`.
 
 # Documentazione
+
+Allinterno della cartella `docs/` sono presenti documenti dettagliati riguardanti:
+
+* Documentazione delle API: **docs/API.md**
+* Struttura del Database: **docs/DATABASE.md**
+* UF14 Task 1 - Isolamento di rete Multi-Tier: **[**docs/Task-1.md**](**docs/Task-1.md**)**
+* UF14 Task 2 - Blue/Green switch del backend: **[**docs/Task-2.md**](**docs/Task-1.md**)**
+* UF14 Task 3 - Zero-downtime backend & migrazioni DB: **[**docs/Task-3.md**](**docs/Task-1.md**)**
+* UF14 Task 4 - Tunnel TCP verso il database: **[**docs/Task-1.md**](**docs/Task-1.md**)**
 
 Allinterno della cartella `docs/` sono presenti documenti dettagliati riguardanti:
 
