@@ -1,3 +1,4 @@
+
 # HIS AFP Management System
 
 Un sistema completo per la gestione del triage e dell'accesso al pronto soccorso. Questo progetto verrà usato come base
@@ -33,27 +34,37 @@ Il progetto è suddiviso in due aree di competenza tecnica:
 Di seguito la struttura logica del repository e il ruolo delle cartelle principali.
 
 - `backend/`: Server applicativo JavaScript. Espone le API per triage, gestione pazienti e accesso al DB.
-- `db/`: Script SQL per schema e dati di esempio `init.sql`.
+- `db/`: Script SQL per schema e dati di esempio `init.sql`, migrazioni in `db/migrations/`.
+- `gateway/`: Configurazione NGINX del Gateway (`nginx.conf` principale + `default.conf`).
 - `docs/`: Documentazione aggiuntiva, diagrammi e note architetturali.
 
 ```
 his-afp
 ├── backend
-│   ├── api_request
-│   │   ├── Auth.http
-│   │   ├── CodiciColori.http
-│   │   ├── getAdmissions.http
-│   │   └── HealthCheck.http
-│   ├── Dockerfile
-│   ├── package.json
-│   ├── package-lock.json
-│   └── server.js
+│   ├── api_request
+│   │   ├── Auth.http
+│   │   ├── CodiciColori.http
+│   │   ├── getAdmissions.http
+│   │   └── HealthCheck.http
+│   ├── Dockerfile
+│   ├── package.json
+│   ├── package-lock.json
+│   └── server.js
 ├── db
-│   └── init.sql
+│   ├── init.sql
+│   └── migrations
+│       └── 002_add_patient_phone.sql
+├── gateway
+│   ├── nginx.conf
+│   └── default.conf
 ├── docker-compose.yml
 ├── docs
-│   ├── API.md
-│   └── DATABASE.md
+│   ├── API.md
+│   ├── DATABASE.md
+│   ├── Task-1.md
+│   ├── Task-2.md
+│   ├── Task-3.md
+│   └── Task-4.md
 ├── LICENSE
 └── README.md
 ```
@@ -114,17 +125,12 @@ Per testare le API sono disponibili le collection Postman nella cartella `postma
 
 Allinterno della cartella `docs/` sono presenti documenti dettagliati riguardanti:
 
-* Documentazione delle API: **docs/API.md**
-* Struttura del Database: **docs/DATABASE.md**
-* UF14 Task 1 - Isolamento di rete Multi-Tier: **[**docs/Task-1.md**](**docs/Task-1.md**)**
-* UF14 Task 2 - Blue/Green switch del backend: **[**docs/Task-2.md**](**docs/Task-1.md**)**
-* UF14 Task 3 - Zero-downtime backend & migrazioni DB: **[**docs/Task-3.md**](**docs/Task-1.md**)**
-* UF14 Task 4 - Tunnel TCP verso il database: **[**docs/Task-1.md**](**docs/Task-1.md**)**
-
-Allinterno della cartella `docs/` sono presenti documenti dettagliati riguardanti:
-
 - Documentazione delle API: [docs/API.md](docs/API.md)
 - Struttura del Database: [docs/DATABASE.md](docs/DATABASE.md)
+- UF14 Task 1 - Isolamento di rete Multi-Tier: [docs/Task-1.md](docs/Task-1.md)
+- UF14 Task 2 - Blue/Green switch del backend: [docs/Task-2.md](docs/Task-2.md)
+- UF14 Task 3 - Zero-downtime backend & migrazioni DB: [docs/Task-3.md](docs/Task-3.md)
+- UF14 Task 4 - Tunnel TCP verso il database: [docs/Task-4.md](docs/Task-4.md)
 
 # Contribuire
 
